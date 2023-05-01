@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/04/27 16:49:42 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/01 20:58:32 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,14 @@ typedef struct t_data {
 
 /* sources */
 
+// main.c TESTING
+void	print_array(char **arr);
+void	print_tokens(t_data **d, char **tokens);
+
 // command_handling.c
+char	**get_cmd(t_data **d, t_iterators *n);
 void	handle_command(t_data **d);
+void	handle_pipes(t_data **d);
 
 // ft_minishell_split_utils.c
 int		check_quote(t_iterators *n, char *line, char quote);

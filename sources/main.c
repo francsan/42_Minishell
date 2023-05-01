@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/04/26 10:12:08 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/01 20:40:30 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,25 @@ void	print_array(char **arr)
 	while (arr[++i])
 		printf("%s\n", arr[i]);
 }
+
+void	print_tokens(t_data **d, char **tokens)
+{
+	int	i;
+
+	i = -1;
+	while (tokens[++i])
+	{
+		printf("%s%s%s\n", BLUE, (*d)->tokens[i].token, DEFAULT);
+		printf("Pipe: %i\n", (*d)->tokens[i].f_pipe);
+		printf("Redirection: %i\n", (*d)->tokens[i].f_redirection);
+		printf("File %i\n", (*d)->tokens[i].f_file);
+		printf("Single Quotes: %i\n", (*d)->tokens[i].f_singlequotes);
+		printf("Double Quotes: %i\n", (*d)->tokens[i].f_doublequotes);
+		printf("Command: %i\n", (*d)->tokens[i].f_command);
+		printf("Flag: %i\n\n", (*d)->tokens[i].f_flag);
+	}
+}
+// JUST FOR TESTING
 
 void	get_paths(t_data **d)
 {
@@ -41,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	*d;
 	char	*line;
+	int		i;
 
 	(void)argc;
 	(void)argv;
@@ -56,6 +76,10 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		free(line);
 	}
+	i = -1;
+	while (d->tokens[++i].token)
+		free(d->tokens[i].token);
+	free(d->tokens);
 	ft_strarr_free(d->paths);
 	ft_strarr_free(d->env);
 	free(line);

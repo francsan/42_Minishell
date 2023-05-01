@@ -6,30 +6,11 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/04/27 16:50:49 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/01 20:42:23 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
-// JUST FOR TESTING
-// static void	print_tokens(t_data **d, char **tokens)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (tokens[++i])
-// 	{
-// 		printf("%s%s%s\n", BLUE, (*d)->tokens[i].token, DEFAULT);
-// 		printf("Pipe: %i\n", (*d)->tokens[i].f_pipe);
-// 		printf("Redirection: %i\n", (*d)->tokens[i].f_redirection);
-// 		printf("File %i\n", (*d)->tokens[i].f_file);
-// 		printf("Single Quotes: %i\n", (*d)->tokens[i].f_singlequotes);
-// 		printf("Double Quotes: %i\n", (*d)->tokens[i].f_doublequotes);
-// 		printf("Command: %i\n", (*d)->tokens[i].f_command);
-// 		printf("Flag: %i\n\n", (*d)->tokens[i].f_flag);
-// 	}
-// }
 
 void	fill_tokens_struct(t_data **d, char **tokens)
 {
@@ -141,11 +122,11 @@ int	parse_command(t_data *d, char *line)
 		return (1);
 	d->num_commands = 0;
 	sort_tokens(&d, tokens);
+	// print_tokens(&d, tokens); // TESTING
 	if (d->num_commands == 1)
 		handle_command(&d); // RUN SINGLE COMMAND
-	// else if (d->num_commands >= 2)
-	// 	handle_pipes(); // RUN MULTIPLE COMMANDS
-	// print_tokens(&d, tokens); // TESTING
+	else if (d->num_commands >= 2)
+		handle_pipes(&d); // RUN MULTIPLE COMMANDS
 	ft_strarr_free(tokens);
 	return (0);
 }
