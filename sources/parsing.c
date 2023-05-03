@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/01 20:42:23 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:41:02 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	fill_tokens_struct(t_data **d, char **tokens)
 {
-	t_iterators	n;
+	t_ints	n;
 
 	n.i = 0;
 	while (tokens[n.i])
@@ -25,7 +25,7 @@ void	fill_tokens_struct(t_data **d, char **tokens)
 		(*d)->tokens[n.i].token = ft_strdup(tokens[n.i]);
 }
 
-int	check_for_command(t_data **d, t_iterators *n)
+int	check_for_command(t_data **d, t_ints *n)
 {
 	char	*temp1;
 	char	*temp2;
@@ -57,20 +57,23 @@ int	check_for_command(t_data **d, t_iterators *n)
 	return (1);
 }
 
-void	run_checks(t_data **d, t_iterators *n)
+void	run_checks(t_data **d, t_ints *n)
 {
 	if (check_for_command(d, n) == 0)
 	{
 			(*d)->tokens[n->i].f_command = 1;
 			(*d)->num_commands++;
 	}
-	while ((*d)->tokens[n->i].token[n->j]
-			&& (*d)->tokens[n->i].token[n->j] != '"' && (*d)->tokens[n->i].token[n->j] != '\'')
+	while ((*d)->tokens[n->i].token[n->j] \
+		&& (*d)->tokens[n->i].token[n->j] != '"' \
+		&& (*d)->tokens[n->i].token[n->j] != '\'')
 	{
 		if ((*d)->tokens[n->i].token[n->j] == '|')
 			(*d)->tokens[n->i].f_pipe = 1;
-		if ((*d)->tokens[n->i].token[n->j] == '<' || (*d)->tokens[n->i].token[n->j] == '>')
-			(*d)->tokens[n->i].f_redirection = 1;
+		if ((*d)->tokens[n->i].token[n->j] == '<')
+			(*d)->tokens[n->i].f_redir_input = 1;
+		if ((*d)->tokens[n->i].token[n->j] == '>')
+			(*d)->tokens[n->i].f_redir_output = 1;
 		if ((*d)->tokens[n->i].token[n->j] == '-')
 			(*d)->tokens[n->i].f_flag = 1;
 		n->j++;
@@ -79,7 +82,7 @@ void	run_checks(t_data **d, t_iterators *n)
 
 void	sort_tokens(t_data **d, char **tokens)
 {
-	t_iterators	n;
+	t_ints	n;
 
 	fill_tokens_struct(d, tokens);
 	n.i = -1;
@@ -122,11 +125,11 @@ int	parse_command(t_data *d, char *line)
 		return (1);
 	d->num_commands = 0;
 	sort_tokens(&d, tokens);
-	// print_tokens(&d, tokens); // TESTING
+	print_tokens(&d, tokens);
 	if (d->num_commands == 1)
-		handle_command(&d); // RUN SINGLE COMMAND
+		handle_single_cmd(&d);
 	else if (d->num_commands >= 2)
-		handle_pipes(&d); // RUN MULTIPLE COMMANDS
+		handle_multiple_cmds(&d);
 	ft_strarr_free(tokens);
 	return (0);
 }

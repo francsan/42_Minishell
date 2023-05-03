@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/01 20:58:32 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/03 20:11:01 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,21 @@
 
 /* strings */
 
-# define PROMPT "\033[1;96mMinishell \033[0m"
+# define PROMPT "Minishell-> "
 
 /* structs */
 
-typedef struct t_iterators {
+typedef struct t_ints {
 	int	i;
 	int	j;
 	int	k;
-}	t_iterators;
+}	t_ints;
 
 typedef struct t_token {
 	char	*token;
 	int		f_pipe;
-	int		f_redirection;
+	int		f_redir_input;
+	int		f_redir_output;
 	int		f_file;
 	int		f_singlequotes;
 	int		f_doublequotes;
@@ -58,6 +59,9 @@ typedef struct t_data {
 	char	**env;
 	char	**paths;
 	int		num_commands;
+	int		old_pipe;
+	int		*pipe;
+	pid_t	*pid;
 	t_token	*tokens;
 }	t_data;
 
@@ -68,15 +72,15 @@ void	print_array(char **arr);
 void	print_tokens(t_data **d, char **tokens);
 
 // command_handling.c
-char	**get_cmd(t_data **d, t_iterators *n);
-void	handle_command(t_data **d);
-void	handle_pipes(t_data **d);
+char	**get_cmd(t_data **d, t_ints *n);
+void	handle_single_cmd(t_data **d);
+void	handle_multiple_cmds(t_data **d);
 
 // ft_minishell_split_utils.c
-int		check_quote(t_iterators *n, char *line, char quote);
-int		check_command(t_iterators *n, char *line);
-void	get_quote_len(t_iterators *n, char *line, char quote);
-void	get_quote(t_iterators *n, char ***tokens, char *line, char quote);
+int		check_quote(t_ints *n, char *line, char quote);
+int		check_command(t_ints *n, char *line);
+void	get_quote_len(t_ints *n, char *line, char quote);
+void	get_quote(t_ints *n, char ***tokens, char *line, char quote);
 
 // ft_minishell_split.c
 char	**alloc_tokens_array(char *line);

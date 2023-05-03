@@ -6,13 +6,13 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:17:08 by francisco         #+#    #+#             */
-/*   Updated: 2023/04/26 07:12:20 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:03:01 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	check_quote(t_iterators *n, char *line, char quote)
+int	check_quote(t_ints *n, char *line, char quote)
 {
 	n->j++;
 	if (!line[n->j])
@@ -30,7 +30,7 @@ int	check_quote(t_iterators *n, char *line, char quote)
 	return (0);
 }
 
-int	check_command(t_iterators *n, char *line)
+int	check_command(t_ints *n, char *line)
 {
 	while (line[n->j] && line[n->j] != ' ')
 	{
@@ -52,7 +52,7 @@ int	check_command(t_iterators *n, char *line)
 	return (0);
 }
 
-void	get_quote_len(t_iterators *n, char *line, char quote)
+void	get_quote_len(t_ints *n, char *line, char quote)
 {
 	n->j++;
 	while (line[n->j] && line[n->j] != quote)
@@ -65,7 +65,7 @@ void	get_quote_len(t_iterators *n, char *line, char quote)
 	n->j++;
 }
 
-void	get_quote(t_iterators *n, char ***tokens, char *line, char quote)
+void	get_quote(t_ints *n, char ***tokens, char *line, char quote)
 {
 	(*tokens)[n->i][n->j - n->k] = line[n->j];
 	n->j++;

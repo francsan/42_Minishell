@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:15:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/04/26 07:14:02 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:03:12 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	**alloc_tokens_array(char *line)
 {
 	char		**tokens;
-	t_iterators	n;
+	t_ints	n;
 
 	n.i = 0;
 	n.j = 0;
@@ -33,7 +33,7 @@ char	**alloc_tokens_array(char *line)
 
 int	alloc_tokens_strings(char ***tokens, char *line)
 {
-	t_iterators	n;
+	t_ints	n;
 
 	n.i = 0;
 	n.j = 0;
@@ -61,7 +61,7 @@ int	alloc_tokens_strings(char ***tokens, char *line)
 
 void	fill_tokens(char ***tokens, char *line, int token_num)
 {
-	t_iterators	n;
+	t_ints	n;
 
 	n.i = 0;
 	n.j = 0;
