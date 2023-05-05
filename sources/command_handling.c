@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/03 21:12:44 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/05 13:54:50 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ char	**get_cmd(t_data **d, t_ints *n)
 void	handle_single_cmd(t_data **d)
 {
 	t_ints	n;
-	pid_t		pid;
-	char		**cmd;
+	pid_t	pid;
+	char	**cmd;
 
 	n.i = 0;
 	cmd = get_cmd(d, &n);
@@ -51,46 +51,23 @@ void	handle_single_cmd(t_data **d)
 	ft_strarr_free(cmd);
 }
 
-void	close_pipe(t_data **d)
+void	run_cmd(t_data **d, t_ints *n, char ***cmds)
 {
-	close((*d)->pipe[0]);
-	close((*d)->pipe[1]);
-}
-
-void	handle_pipes(t_data **d, t_ints *n)
-{
-	while ((*d)->tokens[n->i].token && (*d)->tokens[n->i].f_pipe == 0)
+	if (pipe((*d)->fd) == -1)
+		return ;
+	(*d)->pid[n->j] = fork();
+	if ((*d)->pid[n->j] < 0)
+		return ;
+	else if ((*d)->pid[n->j] == 0)
 	{
-		if ((*d)->tokens[n->i].f_redir_input == 0 \
-			&& (*d)->tokens[n->i].f_redir_output == 0)
-			n->i++;
-		else if((*d)->tokens[n->i].f_redir_input == 1 \
-			|| (*d)->tokens[n->i].f_redir_output == 1 \
-			|| (*d)->tokens[n->i + 1].f_pipe == 1)
-		{
-			if ((*d)->tokens[n->i].f_redir_input == 1)
-			{
-				// dup2(infile, STDIN_FILENO); // INFILE
-			}
-			else if (n->j != 0)
-			{
-				dup2((*d)->old_pipe, STDIN_FILENO);
-			}
-			else if (n->j == 0)
-				dup2((*d)->pipe[1], STDOUT_FILENO);
-			if ((*d)->tokens[n->i].f_redir_output == 1)
-			{
-				// dup2(outfile, STDOUT_FILENO); // OUTFILE
-			}
-			else if (n->j != (*d)->num_commands - 1)
-			{
-				dup2((*d)->pipe[1], STDOUT_FILENO);
-			}
-			n->i++;
-		}
+		handle_pipes(d, n);
+		execve(cmds[n->j][0], cmds[n->j], (*d)->env);
+		exit(0);
 	}
+	(*d)->old_fd = dup((*d)->fd[0]);
 	close_pipe(d);
-	n->i++;
+	waitpid((*d)->pid[n->j], NULL, 0);
+	n->j++;
 }
 
 void	handle_multiple_cmds(t_data **d)
@@ -107,27 +84,11 @@ void	handle_multiple_cmds(t_data **d)
 		n.i++;
 		n.j++;
 	}
-	(*d)->pid = ft_calloc((*d)->num_commands + 1, sizeof(pid_t));
 	n.i = 0;
 	n.j = 0;
+	(*d)->pid = ft_calloc((*d)->num_commands + 1, sizeof(pid_t));
 	while (n.j < (*d)->num_commands)
-	{
-		if (pipe((*d)->pipe) < 0)
-			return ;
-		(*d)->pid[n.j] = fork();
-		if ((*d)->pid[n.j] < 0)
-			return ;
-		else if ((*d)->pid[n.j] == 0)
-		{
-			handle_pipes(d, &n);
-			execve(cmds[n.j][0], cmds[n.j], (*d)->env);
-			exit(0);
-		}
-		(*d)->old_pipe = dup((*d)->pipe[0]);
-		close_pipe(d);
-		waitpid((*d)->pid[n.j], NULL, 0);
-		n.j++;
-	}
+		run_cmd(d, &n, cmds);
 	free((*d)->pid);
 	n.k = -1;
 	while (cmds[++n.k])

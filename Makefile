@@ -15,7 +15,8 @@ FUNCS_F		=	ft_calloc.c ft_split.c ft_strarr_cpy.c \
 FUNCS_DIR	=	functions/
 FUNCS		=	$(addprefix $(FUNCS_DIR), $(FUNCS_F))
 SOURCE_F	=	main.c parsing.c ft_minishell_split_utils.c \
-				ft_minishell_split.c command_handling.c
+				ft_minishell_split.c command_handling.c \
+				pipes.c parsing_utils.c utils.c
 SOURCE_DIR	=	sources/
 SOURCE		=	$(addprefix $(SOURCE_DIR), $(SOURCE_F))
 

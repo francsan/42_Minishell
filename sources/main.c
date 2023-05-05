@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/03 21:06:54 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:30:06 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,10 @@ void	print_tokens(t_data **d, char **tokens)
 }
 // JUST FOR TESTING
 
-void	get_paths(t_data **d)
-{
-	int	i;
-
-	i = -1;
-	while ((*d)->env[++i])
-	{
-		if (ft_strncmp((*d)->env[i], "PATH=", 5) == 0)
-		{
-			(*d)->paths = ft_split(&(*d)->env[i][5], ':');
-			break ;
-		}
-	}
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*d;
 	char	*line;
-	int		i;
 
 	(void)argc;
 	(void)argv;
@@ -77,12 +61,6 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		free(line);
 	}
-	i = -1;
-	while (d->tokens[++i].token)
-		free(d->tokens[i].token);
-	free(d->tokens);
-	ft_strarr_free(d->paths);
-	ft_strarr_free(d->env);
+	free_all(&d);
 	free(line);
-	free(d);
 }

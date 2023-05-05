@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell_split.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:15:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/03 16:03:12 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/05 13:53:28 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	**alloc_tokens_array(char *line)
 {
-	char		**tokens;
+	char	**tokens;
 	t_ints	n;
 
 	n.i = 0;

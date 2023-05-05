@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/03 20:11:01 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:28:24 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ typedef struct t_data {
 	char	**env;
 	char	**paths;
 	int		num_commands;
-	int		old_pipe;
-	int		*pipe;
+	int		old_fd;
+	int		fd[2];
 	pid_t	*pid;
 	t_token	*tokens;
 }	t_data;
@@ -88,8 +88,24 @@ int		alloc_tokens_strings(char ***tokens, char *line);
 void	fill_tokens(char ***tokens, char *line, int token_num);
 char	**ft_minishell_split(char *line);
 
+// parsing_utils.c
+int		try_paths(t_data **d, t_ints *n, int i);
+int		check_for_command(t_data **d, t_ints *n);
+void	run_checks(t_data **d, t_ints *n);
+void	run_checks_quotes(t_data **d, t_ints *n);
+
 // parsing.c
+void	fill_tokens_struct(t_data **d, char **tokens);
+void	sort_tokens(t_data **d, char **tokens);
 int		parse_command(t_data *d, char *line);
+
+// pipes.c
+void	close_pipe(t_data **d);
+void	handle_pipes(t_data **d, t_ints *n);
+
+// utils.c
+void	get_paths(t_data **d);
+void	free_all(t_data **d);
 
 /* functions */
 
