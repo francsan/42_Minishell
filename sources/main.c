@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/05 14:30:06 by francisco        ###   ########.fr       */
+/*   Updated: 2023/05/08 20:58:42 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,12 @@ void	print_tokens(t_data **d, char **tokens)
 		printf("Single Quotes: %i\n", (*d)->tokens[i].f_singlequotes);
 		printf("Double Quotes: %i\n", (*d)->tokens[i].f_doublequotes);
 		printf("Command: %i\n", (*d)->tokens[i].f_command);
-		printf("Flag: %i\n\n", (*d)->tokens[i].f_flag);
+		printf("Flag: %i\n", (*d)->tokens[i].f_flag);
+		printf("Builtin: %i\n", (*d)->tokens[i].f_builtin);
+		int	j = -1;
+		while (++j < 7)
+			printf("Builtins[%i] = %i\n", j, (*d)->tokens->f_builtins[j]);
+		printf("\n");
 	}
 }
 // JUST FOR TESTING
@@ -47,8 +52,8 @@ int	main(int argc, char **argv, char **envp)
 	t_data	*d;
 	char	*line;
 
-	(void)argc;
-	(void)argv;
+	(void) argc;
+	(void) argv;
 	d = ft_calloc(1, sizeof(t_data));
 	d->env = ft_strarr_copy(envp);
 	get_paths(&d);

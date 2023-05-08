@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/05 14:28:24 by francisco        ###   ########.fr       */
+/*   Updated: 2023/05/08 21:39:28 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,18 @@ typedef struct t_ints {
 	int	k;
 }	t_ints;
 
+typedef	struct t_builtins
+{
+	int	echo;
+	int	cd;
+	int	pwd;
+	int	export;
+	int	unset;
+	int	env;
+	int	exit;
+}	t_builtins;
+
+
 typedef struct t_token {
 	char	*token;
 	int		f_pipe;
@@ -53,12 +65,15 @@ typedef struct t_token {
 	int		f_envvar;
 	int		f_command;
 	int		f_flag;
+	int		f_builtin;
+	int		f_builtins[7];
 }	t_token;
 
 typedef struct t_data {
 	char	**env;
 	char	**paths;
 	int		num_commands;
+	int		flag_builtin;
 	int		old_fd;
 	int		fd[2];
 	pid_t	*pid;
@@ -73,7 +88,9 @@ void	print_tokens(t_data **d, char **tokens);
 
 // command_handling.c
 char	**get_cmd(t_data **d, t_ints *n);
+void	handle_builtin_cmd(t_data **d);
 void	handle_single_cmd(t_data **d);
+void	run_cmd(t_data **d, t_ints *n, char ***cmds);
 void	handle_multiple_cmds(t_data **d);
 
 // ft_minishell_split_utils.c
@@ -96,6 +113,8 @@ void	run_checks_quotes(t_data **d, t_ints *n);
 
 // parsing.c
 void	fill_tokens_struct(t_data **d, char **tokens);
+int		fill_flags(t_data **d, t_ints *n, int builtin);
+int		check_for_builtin(t_data **d, t_ints *n);
 void	sort_tokens(t_data **d, char **tokens);
 int		parse_command(t_data *d, char *line);
 

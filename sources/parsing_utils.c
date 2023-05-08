@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/05 14:17:15 by francisco        ###   ########.fr       */
+/*   Updated: 2023/05/08 20:23:14 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	try_paths(t_data **d, t_ints *n, int i)
 
 	temp1 = ft_strjoin((*d)->paths[i], "/");
 	temp2 = ft_strjoin(temp1, (*d)->tokens[n->i].token);
-	if (access(temp2, F_OK) == 0)
+	if (access(temp2, F_OK) == 0 && (*d)->tokens[n->i].token[0] != '.')
 	{
 		free((*d)->tokens[n->i].token);
 		(*d)->tokens[n->i].token = ft_strdup(temp2);
@@ -39,7 +39,7 @@ int	check_for_command(t_data **d, t_ints *n)
 	i = -1;
 	while ((*d)->tokens[n->i].token[++i])
 	{
-		if ((*d)->tokens[n->i].token[i] == '/'
+		if ((*d)->tokens[n->i].token[i] == '/' \
 			&& access((*d)->tokens[n->i].token, F_OK) == 0)
 			return (0);
 	}
@@ -54,8 +54,8 @@ void	run_checks(t_data **d, t_ints *n)
 {
 	if (check_for_command(d, n) == 0)
 	{
-			(*d)->tokens[n->i].f_command = 1;
-			(*d)->num_commands++;
+		(*d)->tokens[n->i].f_command = 1;
+		(*d)->num_commands++;
 	}
 	while ((*d)->tokens[n->i].token[n->j] \
 		&& (*d)->tokens[n->i].token[n->j] != '"' \

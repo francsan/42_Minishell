@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/05 13:54:50 by francisco        ###   ########.fr       */
+/*   Updated: 2023/05/08 22:22:52 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,56 @@ char	**get_cmd(t_data **d, t_ints *n)
 		m.j++;
 	}
 	return (cmd);
+}
+
+int	get_pwd(t_data **d, char **pwd)
+{
+	int		i;
+
+	i = -1;
+	while ((*d)->env[++i])
+	{
+		if (ft_strncmp((*d)->env[i], "PWD=", 4) == 0)
+		{
+			*pwd = ft_strdup((*d)->env[i]);
+			return (i);
+		}
+	}
+	return (0);
+}
+
+void	handle_builtin_cmd(t_data **d)
+{
+	t_ints	n;
+	char	*pwd;
+	char	*path;
+
+	n.i = 0;
+	if ((*d)->tokens[n.i].f_builtins[1] == 1)
+	{
+		if (ft_strncmp((*d)->tokens[n.i + 1].token, "..", 2) == 0)
+		{
+			n.k = get_pwd(d, &pwd);
+			printf("\n\nPWD: %s\n\n", pwd); // TESTING
+			n.j = ft_strlen(pwd);
+			while (--n.j >= 0)
+				if (pwd[n.j] == '/')
+					break ;
+			path = ft_calloc(n.j + 1, sizeof(char));
+			ft_strlcpy(path, pwd, n.j + 1);
+			printf("\n\nPath: %s\n\n", path); // TESTING
+			chdir(path);
+			free((*d)->env[n.k]);
+			(*d)->env[n.k] = ft_strdup(path);
+			free(path);
+			free(pwd);
+		}
+		else
+		{
+			chdir((*d)->tokens[n.i + 1].token);
+			
+		}
+	}
 }
 
 void	handle_single_cmd(t_data **d)
