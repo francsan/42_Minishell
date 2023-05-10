@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/08 21:39:28 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/10 18:08:24 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,32 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+// open
+# include <fcntl.h>
+
 /* strings */
 
 # define PROMPT "Minishell-> "
 
 /* structs */
+
+typedef struct s_red	t_red;
+typedef struct s_cmd	t_cmd;
+
+typedef struct s_red {
+	int		fd;
+	int		is_two;
+	int		output;
+	char	*file;
+	t_red	*next;
+}	t_red;
+
+typedef struct s_cmd {
+	int		outfd;
+	int		infd;
+	t_red	*io;
+	t_cmd	*next;
+}	t_cmd;
 
 typedef struct t_ints {
 	int	i;
@@ -87,19 +108,22 @@ void	print_array(char **arr);
 void	print_tokens(t_data **d, char **tokens);
 
 // command_handling.c
+t_cmd   *add_cmd(t_cmd *cmd);
+void	handle_command(t_data **d, char **tokens);
+
 char	**get_cmd(t_data **d, t_ints *n);
 void	handle_builtin_cmd(t_data **d);
 void	handle_single_cmd(t_data **d);
 void	run_cmd(t_data **d, t_ints *n, char ***cmds);
 void	handle_multiple_cmds(t_data **d);
 
-// ft_minishell_split_utils.c
+// minishell_split_utils.c
 int		check_quote(t_ints *n, char *line, char quote);
 int		check_command(t_ints *n, char *line);
 void	get_quote_len(t_ints *n, char *line, char quote);
 void	get_quote(t_ints *n, char ***tokens, char *line, char quote);
 
-// ft_minishell_split.c
+// minishell_split.c
 char	**alloc_tokens_array(char *line);
 int		alloc_tokens_strings(char ***tokens, char *line);
 void	fill_tokens(char ***tokens, char *line, int token_num);
@@ -121,6 +145,19 @@ int		parse_command(t_data *d, char *line);
 // pipes.c
 void	close_pipe(t_data **d);
 void	handle_pipes(t_data **d, t_ints *n);
+
+// redirect_utils.c
+int		check_redirection(char **tokens, t_cmd *cmd, int i);
+int		pass_red(char *tokens, t_cmd *cmd, int i);
+t_red	*add_red(char *file, int is_two, int output, t_red **beg);
+
+// redirect.c
+int 	redir_prep(t_cmd *cmd);
+int 	redir_check(t_red **red, t_cmd *cmd);
+int		treat_output(t_red *red, t_cmd *cmd);
+int		treat_input(t_red *red, t_cmd *cmd);
+int		check_io_dup(t_red *red);
+void	rem_ref(t_red *rem);
 
 // utils.c
 void	get_paths(t_data **d);
