@@ -47,9 +47,15 @@ int treat_input(t_red *red, t_cmd *cmd)
 int treat_output(t_red *red, t_cmd *cmd)
 {
 	if (red->is_two)
+	{
 		red->fd = open(red->file, O_CREAT | O_APPEND | O_WRONLY, 0644);
+		dup2(red->fd, STDOUT_FILENO);
+	}
 	else
+	{
 		red->fd = open(red->file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+		dup2(red->fd, STDOUT_FILENO);
+	}
 	if (red->fd == -1)
 	{
 		//error;
@@ -89,8 +95,11 @@ void	rem_ref(t_red *rem)
 	free(rem);
 }
 
-int redir_check(t_red **red, t_cmd *cmd)
+int redir_check(t_cmd *cmd)
 {
+	t_red	**red;
+
+	red = red_func(NULL);
 	while (*red_func(NULL))
 	{
 		if ((*red)->output)
@@ -117,7 +126,7 @@ int redir_prep(t_cmd *cmd)
 	{
 		head = tmp->io;
 		red_func(head);
-		if (redir_check(red_func(NULL), tmp))
+		if (redir_check(tmp))
 			return (1);
 		tmp->io = *red_func(NULL);
 		tmp = tmp->next;

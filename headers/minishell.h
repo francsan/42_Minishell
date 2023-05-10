@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/10 18:08:24 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/10 18:56:51 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ t_red	*add_red(char *file, int is_two, int output, t_red **beg);
 
 // redirect.c
 int 	redir_prep(t_cmd *cmd);
-int 	redir_check(t_red **red, t_cmd *cmd);
+int 	redir_check(t_cmd *cmd);
 int		treat_output(t_red *red, t_cmd *cmd);
 int		treat_input(t_red *red, t_cmd *cmd);
 int		check_io_dup(t_red *red);

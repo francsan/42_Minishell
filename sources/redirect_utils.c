@@ -44,12 +44,35 @@ int pass_red(char *tokens, t_cmd *cmd, int i)
 int check_redirection(char **tokens, t_cmd *cmd, int i)
 {
 	if (tokens[i][0] == '>')
-		pass_red(tokens[i + 1], cmd, 1);
+	{
+		if (tokens[i][1] != '\0')
+		{
+			printf("%s\n", &tokens[i][1]);
+			pass_red(&tokens[i][1], cmd, 1);
+		}
+		else
+			pass_red(tokens[i + 1], cmd, 1);
+	}
 	if (tokens[i][0] == '<')
-		pass_red(tokens[i + 1], cmd, 2);
+	{
+		if (tokens[i][1] != '\0')
+			pass_red(&tokens[i][1], cmd, 2);
+		else
+			pass_red(tokens[i + 1], cmd, 2);
+	}
 	if (tokens[i][1] && tokens[i][0] == '>' && tokens[i][1] == '>')
-		pass_red(tokens[i + 1], cmd, 3);
+	{
+		if (tokens[i][1] != '\0')
+			pass_red(&tokens[i][2], cmd, 3);
+		else
+			pass_red(tokens[i + 1], cmd, 3);
+	}
 	if (tokens[i][1] && tokens[i][0] == '<' && tokens[i][1] == '<')
-		pass_red(tokens[i + 1], cmd, 4);
+	{
+		if (tokens[i][1] != '\0')
+			pass_red(&tokens[i][2], cmd, 4);
+		else
+			pass_red(tokens[i + 1], cmd, 4);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/10 18:01:36 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/10 19:04:01 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ void	handle_command(t_data **d, char **tokens)
 	n.i = 0;
 	comando = add_cmd(NULL);
 	cmd = get_cmd(d, &n);
-	pid = fork();
 	while (tokens[++i])
 		check_redirection(tokens, comando, i);
+	pid = fork();
 	if (pid < 0)
+		return ;
+	if (redir_prep(comando))
 		return ;
 	else if (pid == 0)
 	{
 		execve(cmd[0], cmd, (*d)->env);
 		exit(0);
 	}
-	if (redir_prep(comando))
-		return ;
 	waitpid(pid, NULL, 0);
 }
 
@@ -80,10 +80,22 @@ char	**get_cmd(t_data **d, t_ints *n)
 	m.j = 0;
 	while ((*d)->tokens[n->i].token && (*d)->tokens[n->i].f_pipe == 0)
 	{
-		cmd[m.j] = ft_strdup((*d)->tokens[n->i].token);
-		n->i++;
-		m.j++;
+		if ((*d)->tokens[n->i].f_redir_input == 1 \
+			|| (*d)->tokens[n->i].f_redir_output == 1)
+		{
+			if ((*d)->tokens[n->i].token[1] != '\0')
+				n->i++;
+			else if ((*d)->tokens[n->i].token[1] == '\0')
+				n->i += 2;
+		}
+		else
+		{
+			cmd[m.j] = ft_strdup((*d)->tokens[n->i].token);
+			n->i++;
+			m.j++;
+		}
 	}
+	print_array(cmd); // TESTING
 	return (cmd);
 }
 

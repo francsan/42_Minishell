@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/10 17:57:52 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/10 18:58:39 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	parse_command(t_data *d, char *line)
 	d->num_commands = 0;
 	d->flag_builtin = 0;
 	sort_tokens(&d, tokens);
-	print_tokens(&d, tokens); // TESTING
+	// print_tokens(&d, tokens); // TESTING
 	if (d->num_commands == 0 && d->flag_builtin == 1)
 		handle_builtin_cmd(&d);
 	if (d->num_commands == 1)
