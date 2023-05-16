@@ -6,67 +6,11 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/10 19:04:01 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/16 20:30:54 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
-// Mikael
-
-t_cmd	*add_cmd(t_cmd *cmd)
-{
-	t_cmd	*new;
-	t_cmd	*tmp;
-
-	tmp = NULL;
-	new = ft_calloc(1, sizeof(t_cmd));
-	if (!new)
-		return (NULL);
-	new->infd = 0;
-	new->outfd = 1;
-	new->io = NULL;
-	new->next = NULL;	
-	if (!cmd)
-	{
-		cmd = new;
-		return (new);
-	}
-	tmp = cmd;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-	return (new);
-}
-
-void	handle_command(t_data **d, char **tokens)
-{
-	pid_t	pid;
-	char	**cmd;
-	t_cmd	*comando;
-	int		i;
-	t_ints	n;
-	
-	i = 0;
-	n.i = 0;
-	comando = add_cmd(NULL);
-	cmd = get_cmd(d, &n);
-	while (tokens[++i])
-		check_redirection(tokens, comando, i);
-	pid = fork();
-	if (pid < 0)
-		return ;
-	if (redir_prep(comando))
-		return ;
-	else if (pid == 0)
-	{
-		execve(cmd[0], cmd, (*d)->env);
-		exit(0);
-	}
-	waitpid(pid, NULL, 0);
-}
-
-// Mikael
 
 char	**get_cmd(t_data **d, t_ints *n)
 {
@@ -95,7 +39,6 @@ char	**get_cmd(t_data **d, t_ints *n)
 			m.j++;
 		}
 	}
-	print_array(cmd); // TESTING
 	return (cmd);
 }
 
@@ -144,30 +87,30 @@ void	handle_builtin_cmd(t_data **d)
 		else
 		{
 			chdir((*d)->tokens[n.i + 1].token);
-			
 		}
 	}
 }
 
-// void	handle_single_cmd(t_data **d)
-// {
-// 	t_ints	n;
-// 	pid_t	pid;
-// 	char	**cmd;
+void	handle_single_cmd(t_data **d)
+{
+	t_ints	n;
+	pid_t	pid;
+	char	**cmd;
 
-// 	n.i = 0;
-// 	cmd = get_cmd(d, &n);
-// 	pid = fork();
-// 	if (pid < 0)
-// 		return ;
-// 	else if (pid == 0)
-// 	{
-// 		execve(cmd[0], cmd, (*d)->env);
-// 		exit(0);
-// 	}
-// 	waitpid(pid, NULL, 0);
-// 	ft_strarr_free(cmd);
-// }
+	n.i = 0;
+	cmd = get_cmd(d, &n);
+	pid = fork();
+	if (pid < 0)
+		return ;
+	else if (pid == 0)
+	{
+		check_redir(d, 0);
+		execve(cmd[0], cmd, (*d)->env);
+		exit(0);
+	}
+	waitpid(pid, NULL, 0);
+	ft_strarr_free(cmd);
+}
 
 void	run_cmd(t_data **d, t_ints *n, char ***cmds)
 {

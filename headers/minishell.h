@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/10 18:56:51 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:02:11 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,6 @@
 # define PROMPT "Minishell-> "
 
 /* structs */
-
-typedef struct s_red	t_red;
-typedef struct s_cmd	t_cmd;
-
-typedef struct s_red {
-	int		fd;
-	int		is_two;
-	int		output;
-	char	*file;
-	t_red	*next;
-}	t_red;
-
-typedef struct s_cmd {
-	int		outfd;
-	int		infd;
-	t_red	*io;
-	t_cmd	*next;
-}	t_cmd;
 
 typedef struct t_ints {
 	int	i;
@@ -97,6 +79,8 @@ typedef struct t_data {
 	int		flag_builtin;
 	int		old_fd;
 	int		fd[2];
+	int		infile;
+	int		outfile;
 	pid_t	*pid;
 	t_token	*tokens;
 }	t_data;
@@ -108,9 +92,6 @@ void	print_array(char **arr);
 void	print_tokens(t_data **d, char **tokens);
 
 // command_handling.c
-t_cmd   *add_cmd(t_cmd *cmd);
-void	handle_command(t_data **d, char **tokens);
-
 char	**get_cmd(t_data **d, t_ints *n);
 void	handle_builtin_cmd(t_data **d);
 void	handle_single_cmd(t_data **d);
@@ -147,17 +128,9 @@ void	close_pipe(t_data **d);
 void	handle_pipes(t_data **d, t_ints *n);
 
 // redirect_utils.c
-int		check_redirection(char **tokens, t_cmd *cmd, int i);
-int		pass_red(char *tokens, t_cmd *cmd, int i);
-t_red	*add_red(char *file, int is_two, int output, t_red **beg);
 
 // redirect.c
-int 	redir_prep(t_cmd *cmd);
-int 	redir_check(t_cmd *cmd);
-int		treat_output(t_red *red, t_cmd *cmd);
-int		treat_input(t_red *red, t_cmd *cmd);
-int		check_io_dup(t_red *red);
-void	rem_ref(t_red *rem);
+void	check_redir(t_data **d, int cmd_num);
 
 // utils.c
 void	get_paths(t_data **d);

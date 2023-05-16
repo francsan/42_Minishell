@@ -1,135 +1,114 @@
 #include "../headers/minishell.h"
 
-t_red	**red_func(t_red *red)
+char	*skip_quotes(t_data **d, t_ints *n)
 {
-	static t_red	*io;
+	char	*redir;
 
-	if (red)
-		io = red;
-	return (&io);
+	n->j = 0;
+	while ((*d)->tokens[n->i].token[n->j] != '"' && (*d)->tokens[n->i].token[n->j] != '\'')
+		n->j++;
+	if ((*d)->tokens[n->i].token[n->j] == '"')
+	{
+		n->j++;
+		while ((*d)->tokens[n->i].token[n->j] != '"')
+			n->j++;
+		n->j++;
+	}
+	else if ((*d)->tokens[n->i].token[n->j] == '\'')
+	{
+		n->j++;
+		while ((*d)->tokens[n->i].token[n->j] != '\'')
+			n->j++;
+		n->j++;
+	}
+	redir = ft_strdup(&(*d)->tokens[n->i].token[n->j]);
+	return (redir);
 }
 
-int	check_io_dup(t_red *red)
+void	check_redir(t_data **d, int cmd_num)
 {
-	t_red *tmp;
+	t_ints	n;
+	char	*redir;
 
-	tmp = red;
-	tmp = tmp->next;
-	while (tmp)
+	(void) cmd_num;
+	n.i = 0;
+	while ((*d)->tokens[n.i].token)
 	{
-		if (red->output == tmp->output)
-			return (1);
-		tmp = tmp->next;
+		if ((*d)->tokens[n.i].f_redir_input == 1 || (*d)->tokens[n.i].f_redir_output == 1)
+		{
+			n.j = 0;
+			if ((*d)->tokens[n.i].f_singlequotes == 1 || (*d)->tokens[n.i].f_doublequotes == 1)
+			{
+				redir = skip_quotes(d, &n);
+				if (redir[n.j] == '<')
+				{
+					if (redir[n.j + 1] == '\0')
+						(*d)->infile = open((*d)->tokens[n.i + 1].token, O_RDONLY);
+					else if (redir[n.j + 1] == '<')
+					{
+						if (redir[n.j + 2] == '\0')
+							(*d)->infile = open((*d)->tokens[n.i + 1].token, O_RDONLY);
+						else if (redir[n.j + 2])
+							(*d)->infile = open(&redir[n.j + 2], O_RDONLY);
+					}
+					if (redir[n.j + 1] != '<' && redir[n.j + 1])
+						(*d)->infile = open(&redir[n.j + 1], O_RDONLY);
+					dup2((*d)->infile, STDIN_FILENO);
+					close((*d)->infile);
+				}
+				else if (redir[n.j] == '>')
+				{
+					if (redir[n.j + 1] == '\0')
+						(*d)->outfile = open((*d)->tokens[n.i + 1].token, O_CREAT | O_TRUNC | O_RDWR, 0666);
+					else if (redir[n.j + 1] == '>')
+					{
+						if (redir[n.j + 2] == '\0')
+							(*d)->outfile = open((*d)->tokens[n.i + 1].token, O_CREAT | O_TRUNC | O_RDWR, 0666);
+						else if (redir[n.j + 2])
+							(*d)->outfile = open(&redir[n.j + 2], O_CREAT | O_TRUNC | O_RDWR, 0666);
+					}
+					if (redir[n.j + 1] != '>' && redir[n.j + 1])
+						(*d)->outfile = open(&redir[n.j + 1], O_CREAT | O_TRUNC | O_RDWR, 0666);
+					dup2((*d)->outfile, STDOUT_FILENO);
+					close((*d)->outfile);
+				}
+			}
+			else
+			{
+				if ((*d)->tokens[n.i].token[n.j] == '<')
+				{
+					if ((*d)->tokens[n.i].token[n.j + 1] == '<')
+					{
+						if ((*d)->tokens[n.i].token[n.j + 2] == '\0')
+							(*d)->infile = open((*d)->tokens[n.i + 1].token, O_RDONLY);
+						else if ((*d)->tokens[n.i].token[n.j + 2])
+							(*d)->infile = open(&(*d)->tokens[n.i].token[n.j + 2], O_RDONLY);
+					}
+					else if ((*d)->tokens[n.i].token[n.j + 1] == '\0')
+						(*d)->infile = open((*d)->tokens[n.i + 1].token, O_RDONLY);
+					else if ((*d)->tokens[n.i].token[n.j + 1] != '<' && (*d)->tokens[n.i].token[n.j + 1])
+						(*d)->infile = open(&(*d)->tokens[n.i].token[n.j + 1], O_RDONLY);
+					dup2((*d)->infile, STDIN_FILENO);
+					close((*d)->infile);
+				}
+				else if ((*d)->tokens[n.i].token[n.j] == '>')
+				{
+					if ((*d)->tokens[n.i].token[n.j + 1] == '>')
+					{
+						if ((*d)->tokens[n.i].token[n.j + 2] == '\0')
+							(*d)->outfile = open((*d)->tokens[n.i + 1].token, O_CREAT | O_TRUNC | O_RDWR, 0666);
+						else if ((*d)->tokens[n.i].token[n.j + 2])
+							(*d)->outfile = open(&(*d)->tokens[n.i].token[n.j + 2], O_CREAT | O_TRUNC | O_RDWR, 0666);
+					}
+					else if ((*d)->tokens[n.i].token[n.j + 1] == '\0')
+						(*d)->outfile = open((*d)->tokens[n.i + 1].token, O_CREAT | O_TRUNC | O_RDWR, 0666);
+					else if ((*d)->tokens[n.i].token[n.j + 1] != '>' && (*d)->tokens[n.i].token[n.j + 1])
+						(*d)->outfile = open(&(*d)->tokens[n.i].token[n.j + 1], O_CREAT | O_TRUNC | O_RDWR, 0666);
+					dup2((*d)->outfile, STDOUT_FILENO);
+					close((*d)->outfile);
+				}
+			}
+		}
+		n.i++;
 	}
-	return (0);
-}
-
-int treat_input(t_red *red, t_cmd *cmd)
-{
-	if (red->is_two)
-		red->fd = open(red->file, O_RDONLY);
-	if (!red->is_two&& red->fd == -1)
-	{
-		//error;
-		return (1);
-	}
-	if (check_io_dup(red))
-	{
-		close(red->fd);
-		return (0);
-	}
-	if (cmd->infd != -1 && cmd->infd != 0)
-		close(cmd->infd);
-	cmd->infd = red->fd;
-	return (0);
-}
-
-int treat_output(t_red *red, t_cmd *cmd)
-{
-	if (red->is_two)
-	{
-		red->fd = open(red->file, O_CREAT | O_APPEND | O_WRONLY, 0644);
-		dup2(red->fd, STDOUT_FILENO);
-	}
-	else
-	{
-		red->fd = open(red->file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-		dup2(red->fd, STDOUT_FILENO);
-	}
-	if (red->fd == -1)
-	{
-		//error;
-		return (1);
-	}
-	if (check_io_dup(red))
-	{
-		if (cmd->outfd != -1 && cmd->outfd != 0)
-			close(red->fd);
-		cmd->outfd = red->fd;
-	}
-	else
-		close(red->fd);
-	return (0);
-}
-
-void	rem_ref(t_red *rem)
-{
-	t_red	**beg;
-	t_red	*tmp;
-
-	beg = red_func(NULL);
-	tmp = *beg;
-	if (!tmp || !rem)
-		return ;
-	if (*beg == rem)
-		*beg = (*beg)->next;
-	else
-	{
-		tmp = *beg;
-		while (tmp->next && rem != tmp->next)
-			tmp = tmp->next;
-		tmp->next = rem->next;
-	}
-	if (rem->file)
-		free(rem->file);
-	free(rem);
-}
-
-int redir_check(t_cmd *cmd)
-{
-	t_red	**red;
-
-	red = red_func(NULL);
-	while (*red_func(NULL))
-	{
-		if ((*red)->output)
-			if (treat_output(*red, cmd))
-				return (1);
-		if (!(*red)->output)
-			if (treat_input(*red, cmd))
-				return (1);
-		rem_ref(*red);
-	}
-	return (0);
-}
-
-int redir_prep(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	t_red	*head;
-
-	tmp = cmd;
-	//if (heredoc(cmd))
-	//	return (1);
-	tmp = cmd;	
-	while (tmp)
-	{
-		head = tmp->io;
-		red_func(head);
-		if (redir_check(tmp))
-			return (1);
-		tmp->io = *red_func(NULL);
-		tmp = tmp->next;
-	}
-	return (0);
 }
