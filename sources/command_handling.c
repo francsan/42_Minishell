@@ -3,14 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/16 20:30:54 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/17 01:10:25 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
+
+char	*copy_quote(t_data **d, t_ints *n, char quotes)
+{
+	t_ints	m;
+	char	*quote;
+
+	m.l = 0;
+	while (m.l < 2)
+	{
+		m.i = 0;
+		m.j = 0;
+		m.k = 0;
+		while ((*d)->tokens[n->i].token[m.i] && m.j != 2)
+		{
+			if ((*d)->tokens[n->i].token[m.i] == quotes \
+				|| (*d)->tokens[n->i].token[m.i] == '<' \
+				|| (*d)->tokens[n->i].token[m.i] == '>')
+			{
+				if ((*d)->tokens[n->i].token[m.i] == quotes)
+					m.j++;
+				m.i++;
+			}
+			else
+			{
+				if (m.l == 1)
+					quote[m.k] = (*d)->tokens[n->i].token[m.i];
+				m.i++;
+				m.k++;
+			}
+		}
+		if (m.l == 0)
+			quote = ft_calloc(m.k + 1, sizeof(char));
+		m.l++;
+	}
+	return (quote);
+}
 
 char	**get_cmd(t_data **d, t_ints *n)
 {
@@ -24,7 +60,17 @@ char	**get_cmd(t_data **d, t_ints *n)
 	m.j = 0;
 	while ((*d)->tokens[n->i].token && (*d)->tokens[n->i].f_pipe == 0)
 	{
-		if ((*d)->tokens[n->i].f_redir_input == 1 \
+		if ((*d)->tokens[n->i].f_doublequotes == 1 \
+			|| (*d)->tokens[n->i].f_singlequotes == 1)
+		{
+			if ((*d)->tokens[n->i].f_doublequotes == 1)
+				cmd[m.j] = copy_quote(d, n, '"');
+			else if ((*d)->tokens[n->i].f_singlequotes == 1)
+				cmd[m.j] = copy_quote(d, n, '\'');
+			n->i++;
+			m.j++;
+		}
+		else if ((*d)->tokens[n->i].f_redir_input == 1 \
 			|| (*d)->tokens[n->i].f_redir_output == 1)
 		{
 			if ((*d)->tokens[n->i].token[1] != '\0')
@@ -58,7 +104,7 @@ int	get_pwd(t_data **d, char **pwd)
 	return (0);
 }
 
-void	handle_builtin_cmd(t_data **d)
+void	handle_builtin_cmd(t_data **d) // NEED TO FINISH ALL COMMANDS
 {
 	t_ints	n;
 	char	*pwd;
@@ -99,6 +145,7 @@ void	handle_single_cmd(t_data **d)
 
 	n.i = 0;
 	cmd = get_cmd(d, &n);
+	// print_array(cmd); // TESTING
 	pid = fork();
 	if (pid < 0)
 		return ;

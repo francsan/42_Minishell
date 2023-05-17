@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/16 18:02:11 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/17 01:07:02 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct t_ints {
 	int	i;
 	int	j;
 	int	k;
+	int	l;
 }	t_ints;
 
 typedef	struct t_builtins
@@ -126,8 +127,6 @@ int		parse_command(t_data *d, char *line);
 // pipes.c
 void	close_pipe(t_data **d);
 void	handle_pipes(t_data **d, t_ints *n);
-
-// redirect_utils.c
 
 // redirect.c
 void	check_redir(t_data **d, int cmd_num);
