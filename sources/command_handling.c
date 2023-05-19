@@ -6,7 +6,7 @@
 /*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/17 01:10:25 by francisco        ###   ########.fr       */
+/*   Updated: 2023/05/18 19:39:15 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ void	handle_single_cmd(t_data **d)
 
 	n.i = 0;
 	cmd = get_cmd(d, &n);
-	// print_array(cmd); // TESTING
 	pid = fork();
 	if (pid < 0)
 		return ;
@@ -169,6 +168,7 @@ void	run_cmd(t_data **d, t_ints *n, char ***cmds)
 	else if ((*d)->pid[n->j] == 0)
 	{
 		handle_pipes(d, n);
+		check_redir(d, n->l);
 		execve(cmds[n->j][0], cmds[n->j], (*d)->env);
 		exit(0);
 	}
