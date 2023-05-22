@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/08 20:58:42 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/22 15:42:59 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_array(char **arr)
 
 	i = -1;
 	while (arr[++i])
-		printf("%s\n", arr[i]);
+		printf("%s%s%s\n", YELLOW, arr[i], DEFAULT);
 }
 
 void	print_tokens(t_data **d, char **tokens)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/18 19:39:15 by francisco        ###   ########.fr       */
+/*   Updated: 2023/05/22 16:25:27 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,29 @@ char	*copy_quote(t_data **d, t_ints *n, char quotes)
 	return (quote);
 }
 
+void	skip_redir(t_data **d, t_ints *n)
+{
+	t_ints	m;
+	char	redir;
+
+	m.i = 0;
+	while ((*d)->tokens[n->i].token[m.i] != '<' && (*d)->tokens[n->i].token[m.i] != '>')
+		m.i++;
+	redir = (*d)->tokens[n->i].token[m.i];
+	m.i++;
+	if ((*d)->tokens[n->i].token[m.i] == '\0')
+		n->i += 2;
+	else if ((*d)->tokens[n->i].token[m.i] == redir)
+	{
+		if ((*d)->tokens[n->i].token[m.i + 1] == '\0')
+			n->i += 2;
+		else if ((*d)->tokens[n->i].token[m.i + 1] && (*d)->tokens[n->i].token[m.i + 1] != redir)
+			n->i++;
+	}
+	else if ((*d)->tokens[n->i].token[m.i] && (*d)->tokens[n->i].token[m.i] != redir)
+		n->i++;
+}
+
 char	**get_cmd(t_data **d, t_ints *n)
 {
 	t_ints	m;
@@ -72,12 +95,7 @@ char	**get_cmd(t_data **d, t_ints *n)
 		}
 		else if ((*d)->tokens[n->i].f_redir_input == 1 \
 			|| (*d)->tokens[n->i].f_redir_output == 1)
-		{
-			if ((*d)->tokens[n->i].token[1] != '\0')
-				n->i++;
-			else if ((*d)->tokens[n->i].token[1] == '\0')
-				n->i += 2;
-		}
+			skip_redir(d, n);
 		else
 		{
 			cmd[m.j] = ft_strdup((*d)->tokens[n->i].token);
@@ -116,14 +134,14 @@ void	handle_builtin_cmd(t_data **d) // NEED TO FINISH ALL COMMANDS
 		if (ft_strncmp((*d)->tokens[n.i + 1].token, "..", 2) == 0)
 		{
 			n.k = get_pwd(d, &pwd);
-			printf("\n\nPWD: %s\n\n", pwd); // TESTING
+			// printf("\n\nPWD: %s\n\n", pwd); // TESTING
 			n.j = ft_strlen(pwd);
 			while (--n.j >= 0)
 				if (pwd[n.j] == '/')
 					break ;
 			path = ft_calloc(n.j + 1, sizeof(char));
 			ft_strlcpy(path, pwd, n.j + 1);
-			printf("\n\nPath: %s\n\n", path); // TESTING
+			// printf("\n\nPath: %s\n\n", path); // TESTING
 			chdir(path);
 			free((*d)->env[n.k]);
 			(*d)->env[n.k] = ft_strdup(path);
@@ -151,6 +169,7 @@ void	handle_single_cmd(t_data **d)
 	else if (pid == 0)
 	{
 		check_redir(d, 0);
+		// print_array(cmd); // TESTING
 		execve(cmd[0], cmd, (*d)->env);
 		exit(0);
 	}
