@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/18 19:39:37 by francisco        ###   ########.fr       */
+/*   Updated: 2023/05/22 19:37:05 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct t_ints {
 	int	l;
 }	t_ints;
 
-typedef	struct t_builtins
+typedef struct t_builtins
 {
 	int	echo;
 	int	cd;
@@ -56,7 +56,6 @@ typedef	struct t_builtins
 	int	env;
 	int	exit;
 }	t_builtins;
-
 
 typedef struct t_token {
 	char	*token;
@@ -92,8 +91,13 @@ typedef struct t_data {
 void	print_array(char **arr);
 void	print_tokens(t_data **d, char **tokens);
 
-// command_handling.c
+// command_handling_utils.c
+char	*remove_quotes(t_data **d, t_ints *n, char quotes);
+void	skip_redir(t_data **d, t_ints *n);
 char	**get_cmd(t_data **d, t_ints *n);
+int		get_pwd(t_data **d, char **pwd);
+
+// command_handling.c
 void	handle_builtin_cmd(t_data **d);
 void	handle_single_cmd(t_data **d);
 void	run_cmd(t_data **d, t_ints *n, char ***cmds);
@@ -125,10 +129,14 @@ void	sort_tokens(t_data **d, char **tokens);
 int		parse_command(t_data *d, char *line);
 
 // pipes.c
+void	get_index(t_data **d, t_ints *n);
+void	check_for_redirs(t_data **d, t_ints *n, int *f_input, int *f_output);
 void	close_pipe(t_data **d);
 void	handle_pipes(t_data **d, t_ints *n);
 
 // redirect.c
+char	*skip_quotes(t_data **d, t_ints *n);
+void	handle_redirections(t_data **d, t_ints *n, char *redir);
 void	check_redir(t_data **d, int cmd_num);
 
 // utils.c

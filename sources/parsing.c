@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/22 17:56:13 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/22 19:14:50 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	fill_flags(t_data **d, t_ints *n, int builtin)
 int	check_for_builtin(t_data **d, t_ints *n)
 {
 	if (ft_strncmp((*d)->tokens[n->i].token, "echo", 4) == 0 \
-		&& (*d)->tokens[n->i + 1].token && ft_strncmp((*d)->tokens[n->i + 1].token, "-n", 2) == 0)
+		&& (*d)->tokens[n->i + 1].token \
+		&& ft_strncmp((*d)->tokens[n->i + 1].token, "-n", 2) == 0)
 		return (fill_flags(d, n, 0));
 	else if (ft_strncmp((*d)->tokens[n->i].token, "cd", 2) == 0)
 		return (fill_flags(d, n, 1));
@@ -88,7 +89,6 @@ int	parse_command(t_data *d, char *line)
 	d->num_commands = 0;
 	d->flag_builtin = 0;
 	sort_tokens(&d, tokens);
-	// print_tokens(&d, tokens); // TESTING
 	if (d->num_commands == 0 && d->flag_builtin == 1)
 		handle_builtin_cmd(&d);
 	if (d->num_commands == 1)

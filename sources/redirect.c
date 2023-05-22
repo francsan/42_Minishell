@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:02:10 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/22 19:08:50 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/22 19:16:29 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ char	*skip_quotes(t_data **d, t_ints *n)
 	char	*redir;
 
 	n->j = 0;
-	while ((*d)->tokens[n->i].token[n->j] != '"' && (*d)->tokens[n->i].token[n->j] != '\'')
+	while ((*d)->tokens[n->i].token[n->j] != '"' \
+		&& (*d)->tokens[n->i].token[n->j] != '\'')
 		n->j++;
 	if ((*d)->tokens[n->i].token[n->j] == '"')
 	{
@@ -58,13 +59,16 @@ void	handle_redirections(t_data **d, t_ints *n, char *redir)
 	else if (redir[0] == '>')
 	{
 		if (redir[1] == '\0')
-			(*d)->outfile = open((*d)->tokens[n->i + 1].token, O_CREAT | O_TRUNC | O_WRONLY, 0666);
+			(*d)->outfile = open((*d)->tokens[n->i + 1].token, \
+			O_CREAT | O_TRUNC | O_WRONLY, 0666);
 		else if (redir[1] == '>')
 		{
 			if (redir[2] == '\0')
-				(*d)->outfile = open((*d)->tokens[n->i + 1].token, O_CREAT | O_APPEND | O_WRONLY, 0666);
+				(*d)->outfile = open((*d)->tokens[n->i + 1].token, \
+				O_CREAT | O_APPEND | O_WRONLY, 0666);
 			else if (redir[2])
-				(*d)->outfile = open(&redir[2], O_CREAT | O_APPEND | O_WRONLY, 0666);
+				(*d)->outfile = open(&redir[2], \
+				O_CREAT | O_APPEND | O_WRONLY, 0666);
 		}
 		else if (redir[1] != '>' && redir[1])
 			(*d)->outfile = open(&redir[1], O_CREAT | O_TRUNC | O_WRONLY, 0666);
@@ -81,9 +85,11 @@ void	check_redir(t_data **d, int cmd_num)
 	n.i = cmd_num;
 	while ((*d)->tokens[n.i].token && (*d)->tokens[n.i].f_pipe == 0)
 	{
-		if ((*d)->tokens[n.i].f_redir_input == 1 || (*d)->tokens[n.i].f_redir_output == 1)
+		if ((*d)->tokens[n.i].f_redir_input == 1 \
+			|| (*d)->tokens[n.i].f_redir_output == 1)
 		{
-			if ((*d)->tokens[n.i].f_singlequotes == 1 || (*d)->tokens[n.i].f_doublequotes == 1)
+			if ((*d)->tokens[n.i].f_singlequotes == 1 \
+				|| (*d)->tokens[n.i].f_doublequotes == 1)
 			{
 				redir = skip_quotes(d, &n);
 				handle_redirections(d, &n, redir);
