@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/22 16:25:27 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:35:17 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,6 @@ void	handle_single_cmd(t_data **d)
 	else if (pid == 0)
 	{
 		check_redir(d, 0);
-		// print_array(cmd); // TESTING
 		execve(cmd[0], cmd, (*d)->env);
 		exit(0);
 	}

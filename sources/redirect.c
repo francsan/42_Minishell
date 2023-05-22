@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:02:10 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/22 15:53:34 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/22 19:08:50 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,7 @@ void	check_redir(t_data **d, int cmd_num)
 	char	*redir;
 
 	n.i = cmd_num;
-	if ((*d)->tokens[n.i].f_pipe == 1)
-		n.i++;
-	while ((*d)->tokens[n.i].token)
+	while ((*d)->tokens[n.i].token && (*d)->tokens[n.i].f_pipe == 0)
 	{
 		if ((*d)->tokens[n.i].f_redir_input == 1 || (*d)->tokens[n.i].f_redir_output == 1)
 		{

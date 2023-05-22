@@ -6,16 +6,28 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:47:34 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/22 15:37:59 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/22 19:07:06 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	close_pipe(t_data **d)
+void	get_index(t_data **d, t_ints *n)
 {
-	close((*d)->fd[0]);
-	close((*d)->fd[1]);
+	t_ints	m;
+
+	m.i = 0;
+	while ((*d)->tokens[n->i].token)
+	{
+		if ((*d)->tokens[n->i].f_pipe == 1)
+			m.i++;
+		if (m.i == n->j)
+			break ;
+		n->i++;
+	}
+	if ((*d)->tokens[n->i].f_pipe == 1)
+		n->i++;
+	n->l = n->i;
 }
 
 void	check_for_redirs(t_data **d, t_ints *n, int *f_input, int *f_output)
@@ -32,11 +44,18 @@ void	check_for_redirs(t_data **d, t_ints *n, int *f_input, int *f_output)
 	}
 }
 
+void	close_pipe(t_data **d)
+{
+	close((*d)->fd[0]);
+	close((*d)->fd[1]);
+}
+
 void	handle_pipes(t_data **d, t_ints *n)
 {
 	int	f_input;
 	int	f_output;
 
+	get_index(d, n);
 	check_for_redirs(d, n, &f_input, &f_output);
 	if (n->j == 0)
 	{
