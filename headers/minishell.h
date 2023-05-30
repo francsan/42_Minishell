@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/22 19:37:05 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/30 17:21:37 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@
 // open
 # include <fcntl.h>
 
-/* strings */
+/* strings & values */
 
 # define PROMPT "Minishell-> "
+# define BUFFER_SIZE 42
 
 /* structs */
 
@@ -161,6 +162,9 @@ char	**ft_strarr_copy(char **arr);
 // ft_strarr_free.c
 void	ft_strarr_free(char **array);
 
+// ft_strchr.c
+char	*ft_strchr(const char *s, int c);
+
 // ft_strdup.c
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_strdup(const char *s1);
@@ -173,6 +177,13 @@ size_t	ft_strlen(const char *s);
 
 // ft_strncmp.c
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
+// get_next_line.c
+char	*ft_free(char *buffer, char *buf);
+char	*ft_next(char *buffer);
+char	*ft_line(char *buffer);
+char	*read_file(int fd, char *ret);
+char	*get_next_line(int fd);
 
 /* colors */
 

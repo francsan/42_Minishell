@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:02:10 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/22 19:16:29 by francsan         ###   ########.fr       */
+/*   Updated: 2023/05/30 17:34:54 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,28 @@ char	*skip_quotes(t_data **d, t_ints *n)
 	return (redir);
 }
 
+void	handle_heredoc(t_data **d, char *delimiter)
+{
+	char	*buffer;
+	int		temp_fd;
+
+	temp_fd = open("../.tmp", O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	write(STDIN_FILENO, "> ", 2);
+	buffer = get_next_line(STDIN_FILENO);
+	while (1)
+	{
+		if (ft_strncmp(buffer, delimiter, ft_strlen(buffer) - 1) == 0 \
+			&& ft_strlen(buffer) > 1)
+			break ;
+		write(temp_fd, buffer, ft_strlen(buffer));
+		free(buffer);
+		write(STDIN_FILENO, "> ", 2);
+		buffer = get_next_line(STDIN_FILENO);
+	}
+	free(buffer);
+	(*d)->infile = open("../.tmp", O_RDONLY);
+}
+
 void	handle_redirections(t_data **d, t_ints *n, char *redir)
 {
 	if (redir[0] == '<')
@@ -47,9 +69,9 @@ void	handle_redirections(t_data **d, t_ints *n, char *redir)
 		else if (redir[1] == '<')
 		{
 			if (redir[2] == '\0')
-				(*d)->infile = open((*d)->tokens[n->i + 1].token, O_RDONLY);
+				handle_heredoc(d, (*d)->tokens[n->i + 1].token);
 			else if (redir[2])
-				(*d)->infile = open(&redir[2], O_RDONLY);
+				handle_heredoc(d, &redir[2]);
 		}
 		else if (redir[1] != '<' && redir[1])
 			(*d)->infile = open(&redir[1], O_RDONLY);
@@ -60,7 +82,7 @@ void	handle_redirections(t_data **d, t_ints *n, char *redir)
 	{
 		if (redir[1] == '\0')
 			(*d)->outfile = open((*d)->tokens[n->i + 1].token, \
-			O_CREAT | O_TRUNC | O_WRONLY, 0666);
+				O_CREAT | O_TRUNC | O_WRONLY, 0666);
 		else if (redir[1] == '>')
 		{
 			if (redir[2] == '\0')
@@ -71,7 +93,8 @@ void	handle_redirections(t_data **d, t_ints *n, char *redir)
 				O_CREAT | O_APPEND | O_WRONLY, 0666);
 		}
 		else if (redir[1] != '>' && redir[1])
-			(*d)->outfile = open(&redir[1], O_CREAT | O_TRUNC | O_WRONLY, 0666);
+			(*d)->outfile = open(&redir[1], \
+				O_CREAT | O_TRUNC | O_WRONLY, 0666);
 		dup2((*d)->outfile, STDOUT_FILENO);
 		close((*d)->outfile);
 	}
