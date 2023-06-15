@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 19:21:19 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 21:05:29 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,12 @@ int	main(int argc, char **argv, char **envp)
 			add_history(buffer);
 		if (parse_command(d, line))
 			break ;
-		if (d->tokens)
-		i = -1;
-		while (d->tokens[++i].token)
-			free(d->tokens[i].token);
+		if (d->num_commands != 0 || d->flag_builtin != 0)
+		{
+			i = -1;
+			while (d->tokens[++i].token)
+				free(d->tokens[i].token);
+		}
 		free(d->tokens);
 		free(line);
 		free(buffer);
