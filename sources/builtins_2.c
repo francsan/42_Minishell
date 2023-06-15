@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:08 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/15 19:45:08 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 20:26:09 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,26 +61,26 @@ int	cd(char **tokens, t_env *env)
 	return (0);
 }
 
-int	export(t_cmd *cmd, t_env *env, int outfd)
+int	export(char **tokens, t_env *env, int outfd)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	if (!cmd->args[1])
+	if (!tokens[1])
 		export_print(env->env, outfd);
-	while (cmd->args[++i])
+	while (tokens[++i])
 	{
-		if (is_valid(cmd->args[i]))
+		if (is_valid(tokens[i]))
 		{
-			j = var_pos(cmd->args[i], env->env);
-			if (j != -1 && cmd->args[i][strrlen(cmd->args[i], '=') - 1] == '=')
+			j = var_pos(tokens[i], env->env);
+			if (j != -1 && tokens[i][strrlen(tokens[i], '=') - 1] == '=')
 			{
 				free(env->env[j]);
-				env->env[j] = ft_strdup(cmd->args[i]);
+				env->env[j] = ft_strdup(tokens[i]);
 			}
 			else if (j == -1)
-				if (handle_no_var(cmd, env_func(), i))
+				if (handle_no_var(tokens, env_func(), i))
 					return(225);
 		}
 		else

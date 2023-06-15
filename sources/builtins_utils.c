@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:28 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/15 18:52:30 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 20:26:43 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ft_len(char **env)
 	return (i);
 }
 
-int	handle_no_var(t_cmd *cmd, t_env *env, int i)
+int	handle_no_var(char **tokens, t_env *env, int i)
 {
 	char	**tmp;
 	int		j;
@@ -90,7 +90,7 @@ int	handle_no_var(t_cmd *cmd, t_env *env, int i)
 	while (tmp[++j])
 		env->env[j] = tmp[j];
 	free(tmp);
-	env->env[j] = ft_strdup(cmd->args[i]);
+	env->env[j] = ft_strdup(tokens[i]);
 	return (0);
 }
 

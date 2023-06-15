@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 19:13:40 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 20:27:47 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void		print_tokens(t_data **d, char **tokens);
 int			check_unset(t_cmd *cmd, char **env, int i);
 int			unset(t_cmd *cmd, t_env *env);
 int			cd(char **tokens, t_env *env);
-int			export(t_cmd *cmd, t_env *env, int outfd);
+int			export(char **tokens, t_env *env, int outfd);
 int			exit_builtin(char **tokens, t_env *env);
 
 // builtin_utils.c
@@ -130,7 +130,7 @@ int			var_set(char **tokens);
 int			strrlen(char *str, char c);
 int 		is_valid(char *str);
 int			var_pos(char *str, char **env);
-int			handle_no_var(t_cmd *cmd, t_env *env, int i);
+int			handle_no_var(char **tokens, t_env *env, int i);
 void		export_print(char **env, int out);
 
 // builtin.c
@@ -138,7 +138,6 @@ int			pwd(void);
 int			env(char **envp); //t_cmd *cmd, int out 
 int			echo(char **tokens);
 int			exec_builtin(t_cmd *cmd, char **tokens, int outfd);
-int			is_builtin(char *cmd);
 
 // command_handling_utils.c
 char		*remove_quotes(t_data **d, t_ints *n, char quotes);
