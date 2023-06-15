@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:26:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 16:07:23 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:57:59 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ char	*sort_line(char *buffer)
 	int		i;
 	int		j;
 
+	if (!buffer)
+		return (NULL);
 	i = get_pipe_num(buffer);
 	line = ft_calloc(ft_strlen(buffer) + (i * 2) + 1, sizeof(char));
 	i = 0;

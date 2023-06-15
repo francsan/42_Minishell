@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 15:59:50 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:41:12 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,12 @@ int	main(int argc, char **argv, char **envp)
 	t_data	*d;
 	char	*buffer;
 	char	*line;
+	int		i;
 
 	(void) argc;
 	(void) argv;
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	d = ft_calloc(1, sizeof(t_data));
 	d->env = ft_strarr_copy(envp);
 	get_paths(&d);
@@ -62,10 +65,16 @@ int	main(int argc, char **argv, char **envp)
 	{
 		buffer = readline(PROMPT);
 		line = sort_line(buffer);
+		if_ctrl_d(&d, buffer, line);
 		if (line && ft_strlen(line) > 0)
-			add_history(line);
+			add_history(buffer);
 		if (parse_command(d, line))
 			break ;
+		if (d->tokens)
+		i = -1;
+		while (d->tokens[++i].token)
+			free(d->tokens[i].token);
+		free(d->tokens);
 		free(line);
 		free(buffer);
 	}

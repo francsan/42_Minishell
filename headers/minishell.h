@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 16:07:43 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:42:45 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@
 
 // open
 # include <fcntl.h>
+
+// signal
+# include <signal.h>
 
 /* strings & values */
 
@@ -86,106 +89,115 @@ typedef struct t_data {
 	t_token	*tokens;
 }	t_data;
 
+typedef struct t_signal	{
+	int	exit_status;
+}	t_signal;
+
 /* sources */
 
 // main.c TESTING
-void	print_array(char **arr);
-void	print_tokens(t_data **d, char **tokens);
+void		print_array(char **arr);
+void		print_tokens(t_data **d, char **tokens);
 
 // command_handling_utils.c
-char	*remove_quotes(t_data **d, t_ints *n, char quotes);
-void	skip_redir(t_data **d, t_ints *n);
-char	**get_cmd(t_data **d, t_ints *n);
-int		get_pwd(t_data **d, char **pwd);
+char		*remove_quotes(t_data **d, t_ints *n, char quotes);
+void		skip_redir(t_data **d, t_ints *n);
+char		**get_cmd(t_data **d, t_ints *n);
+int			get_pwd(t_data **d, char **pwd);
 
 // command_handling.c
-void	handle_builtin_cmd(t_data **d);
-void	handle_single_cmd(t_data **d);
-void	run_cmd(t_data **d, t_ints *n, char ***cmds);
-void	handle_multiple_cmds(t_data **d);
+void		handle_builtin_cmd(t_data **d);
+void		handle_single_cmd(t_data **d);
+void		run_cmd(t_data **d, t_ints *n, char ***cmds);
+void		handle_multiple_cmds(t_data **d);
 
 // minishell_split_utils.c
-int		check_quote(t_ints *n, char *line, char quote);
-int		check_command(t_ints *n, char *line);
-void	get_quote_len(t_ints *n, char *line, char quote);
-void	get_quote(t_ints *n, char ***tokens, char *line, char quote);
+int			check_quote(t_ints *n, char *line, char quote);
+int			check_command(t_ints *n, char *line);
+void		get_quote_len(t_ints *n, char *line, char quote);
+void		get_quote(t_ints *n, char ***tokens, char *line, char quote);
 
 // minishell_split.c
-char	**alloc_tokens_array(char *line);
-int		alloc_tokens_strings(char ***tokens, char *line);
-void	fill_tokens(char ***tokens, char *line, int token_num);
-char	**ft_minishell_split(char *line);
+char		**alloc_tokens_array(char *line);
+int			alloc_tokens_strings(char ***tokens, char *line);
+void		fill_tokens(char ***tokens, char *line, int token_num);
+char		**ft_minishell_split(char *line);
 
 // parsing_utils.c
-int		try_paths(t_data **d, t_ints *n, int i);
-int		check_for_command(t_data **d, t_ints *n);
-void	run_checks(t_data **d, t_ints *n);
-void	run_checks_quotes(t_data **d, t_ints *n);
+int			try_paths(t_data **d, t_ints *n, int i);
+int			check_for_command(t_data **d, t_ints *n);
+void		run_checks(t_data **d, t_ints *n);
+void		run_checks_quotes(t_data **d, t_ints *n);
 
 // parsing.c
-void	fill_tokens_struct(t_data **d, char **tokens);
-int		fill_flags(t_data **d, t_ints *n, int builtin);
-int		check_for_builtin(t_data **d, t_ints *n);
-void	sort_tokens(t_data **d, char **tokens);
-int		parse_command(t_data *d, char *line);
+void		fill_tokens_struct(t_data **d, char **tokens);
+int			fill_flags(t_data **d, t_ints *n, int builtin);
+int			check_for_builtin(t_data **d, t_ints *n);
+void		sort_tokens(t_data **d, char **tokens);
+int			parse_command(t_data *d, char *line);
 
 // pipes.c
-void	get_index(t_data **d, t_ints *n);
-void	check_for_redirs(t_data **d, t_ints *n, int *f_input, int *f_output);
-void	close_pipe(t_data **d);
-void	handle_pipes(t_data **d, t_ints *n);
+void		get_index(t_data **d, t_ints *n);
+void		check_for_redirs(t_data **d, t_ints *n, int *f_input, int *f_output);
+void		close_pipe(t_data **d);
+void		handle_pipes(t_data **d, t_ints *n);
 
 // redirect.c
-char	*skip_quotes(t_data **d, t_ints *n);
-void	handle_redirections(t_data **d, t_ints *n, char *redir);
-void	check_redir(t_data **d, int cmd_num);
+char		*skip_quotes(t_data **d, t_ints *n);
+void		handle_redirections(t_data **d, t_ints *n, char *redir);
+void		check_redir(t_data **d, int cmd_num);
+
+// signals.c
+t_signal	*sig_func();
+void		sig_handler(int sig);
+void		if_ctrl_d(t_data **d, char *buffer, char *line);
 
 // utils.c
-void	get_paths(t_data **d);
-int		get_pipe_num(char *buffer);
-char	*sort_line(char *buffer);
-void	free_all(t_data **d);
+void		get_paths(t_data **d);
+int			get_pipe_num(char *buffer);
+char		*sort_line(char *buffer);
+void		free_all(t_data **d);
 
 /* functions */
 
 // ft_calloc.c
-void	*ft_memset(void *b, int c, size_t len);
-void	*ft_calloc(size_t count, size_t size);
+void		*ft_memset(void *b, int c, size_t len);
+void		*ft_calloc(size_t count, size_t size);
 
 // ft_split.c
-int		mem_size(char const *s, char c);
-int		word_size(const char *s, char c);
-char	**fill_strs(char **strs, const char *s, char c);
-char	**ft_split(char const *s, char c);
+int			mem_size(char const *s, char c);
+int			word_size(const char *s, char c);
+char		**fill_strs(char **strs, const char *s, char c);
+char		**ft_split(char const *s, char c);
 
 // ft_strarr_cpy.c
-char	**ft_strarr_copy(char **arr);
+char		**ft_strarr_copy(char **arr);
 
 // ft_strarr_free.c
-void	ft_strarr_free(char **array);
+void		ft_strarr_free(char **array);
 
 // ft_strchr.c
-char	*ft_strchr(const char *s, int c);
+char		*ft_strchr(const char *s, int c);
 
 // ft_strdup.c
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-char	*ft_strdup(const char *s1);
+size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
+char		*ft_strdup(const char *s1);
 
 // ft_strjoin.c
-char	*ft_strjoin(char const *s1, char const *s2);
+char		*ft_strjoin(char const *s1, char const *s2);
 
 // ft_strlen.c
-size_t	ft_strlen(const char *s);
+size_t		ft_strlen(const char *s);
 
 // ft_strncmp.c
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // get_next_line.c
-char	*ft_free(char *buffer, char *buf);
-char	*ft_next(char *buffer);
-char	*ft_line(char *buffer);
-char	*read_file(int fd, char *ret);
-char	*get_next_line(int fd);
+char		*ft_free(char *buffer, char *buf);
+char		*ft_next(char *buffer);
+char		*ft_line(char *buffer);
+char		*read_file(int fd, char *ret);
+char		*get_next_line(int fd);
 
 /* colors */
 

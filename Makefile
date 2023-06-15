@@ -18,7 +18,8 @@ FUNCS		=	$(addprefix $(FUNCS_DIR), $(FUNCS_F))
 SOURCE_F	=	main.c parsing.c minishell_split_utils.c \
 				minishell_split.c command_handling.c \
 				pipes.c parsing_utils.c utils.c \
-				redirect.c command_handling_utils.c
+				redirect.c command_handling_utils.c \
+				signals.c
 SOURCE_DIR	=	sources/
 SOURCE		=	$(addprefix $(SOURCE_DIR), $(SOURCE_F))
 
