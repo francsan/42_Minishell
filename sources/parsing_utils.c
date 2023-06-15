@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/08 20:23:14 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 20:01:13 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_for_command(t_data **d, t_ints *n)
 	i = -1;
 	while ((*d)->tokens[n->i].token[++i])
 	{
-		if ((*d)->tokens[n->i].token[i] == '/' \
+		if ((*d)->tokens[n->i].token[0] == '/' \
 			&& access((*d)->tokens[n->i].token, F_OK) == 0)
 			return (0);
 	}
