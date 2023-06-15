@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 18:41:12 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 19:21:19 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	d = ft_calloc(1, sizeof(t_data));
 	d->env = ft_strarr_copy(envp);
+	env_func()->env = env_create(envp);
 	get_paths(&d);
 	while (1)
 	{
