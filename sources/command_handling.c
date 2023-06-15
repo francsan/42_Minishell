@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/15 19:07:37 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 19:34:49 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	handle_builtin_cmd(t_data **d, char **tokens)
 	comando = add_cmd(NULL);
 	if ((*d)->num_commands == 0 && (*d)->flag_builtin == 1)
 		exec_builtin(comando, tokens, comando->outfd);
+	free(comando);
 }
 
 void	handle_single_cmd(t_data **d)
