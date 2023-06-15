@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/30 17:21:37 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:07:43 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ void	check_redir(t_data **d, int cmd_num);
 
 // utils.c
 void	get_paths(t_data **d);
+int		get_pipe_num(char *buffer);
+char	*sort_line(char *buffer);
 void	free_all(t_data **d);
 
 /* functions */

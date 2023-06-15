@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/22 15:42:59 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 15:59:50 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	print_tokens(t_data **d, char **tokens)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*d;
+	char	*buffer;
 	char	*line;
 
 	(void) argc;
@@ -59,13 +60,16 @@ int	main(int argc, char **argv, char **envp)
 	get_paths(&d);
 	while (1)
 	{
-		line = readline(PROMPT);
+		buffer = readline(PROMPT);
+		line = sort_line(buffer);
 		if (line && ft_strlen(line) > 0)
 			add_history(line);
 		if (parse_command(d, line))
 			break ;
 		free(line);
+		free(buffer);
 	}
 	free_all(&d);
 	free(line);
+	free(buffer);
 }
