@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 18:42:45 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/15 19:13:40 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,21 @@ typedef struct t_data {
 	t_token	*tokens;
 }	t_data;
 
+typedef struct t_env {
+	char	**env;
+	int		status;
+}	t_env;
+
+typedef struct t_cmd	t_cmd;
+
+typedef struct t_cmd {
+	int		outfd;
+	int		infd;
+	char	*path;
+	char	**args;
+	t_cmd	*next;
+}	t_cmd;
+
 typedef struct t_signal	{
 	int	exit_status;
 }	t_signal;
@@ -99,6 +114,32 @@ typedef struct t_signal	{
 void		print_array(char **arr);
 void		print_tokens(t_data **d, char **tokens);
 
+// builtins2.c
+int			check_unset(t_cmd *cmd, char **env, int i);
+int			unset(t_cmd *cmd, t_env *env);
+int			cd(char **tokens, t_env *env);
+int			export(t_cmd *cmd, t_env *env, int outfd);
+int			exit_builtin(char **tokens, t_env *env);
+
+// builtin_utils.c
+int			is_num(char *str);
+int			env_set(t_cmd *cmd, t_env *env, int i);
+int			env_change(t_env *env);
+char		*get_var(char **env, char *envid);
+int			var_set(char **tokens);
+int			strrlen(char *str, char c);
+int 		is_valid(char *str);
+int			var_pos(char *str, char **env);
+int			handle_no_var(t_cmd *cmd, t_env *env, int i);
+void		export_print(char **env, int out);
+
+// builtin.c
+int			pwd(void);
+int			env(char **envp); //t_cmd *cmd, int out 
+int			echo(char **tokens);
+int			exec_builtin(t_cmd *cmd, char **tokens, int outfd);
+int			is_builtin(char *cmd);
+
 // command_handling_utils.c
 char		*remove_quotes(t_data **d, t_ints *n, char quotes);
 void		skip_redir(t_data **d, t_ints *n);
@@ -106,7 +147,8 @@ char		**get_cmd(t_data **d, t_ints *n);
 int			get_pwd(t_data **d, char **pwd);
 
 // command_handling.c
-void		handle_builtin_cmd(t_data **d);
+t_cmd		*add_cmd(t_cmd *cmd);
+void		handle_builtin_cmd(t_data **d, char **tokens);
 void		handle_single_cmd(t_data **d);
 void		run_cmd(t_data **d, t_ints *n, char ***cmds);
 void		handle_multiple_cmds(t_data **d);
@@ -152,6 +194,11 @@ t_signal	*sig_func();
 void		sig_handler(int sig);
 void		if_ctrl_d(t_data **d, char *buffer, char *line);
 
+// utils_2.c
+t_env		*env_func(void);
+char		*shell_lvl(char *envp);
+char		**env_create(char **envp);
+
 // utils.c
 void		get_paths(t_data **d);
 int			get_pipe_num(char *buffer);
@@ -160,9 +207,18 @@ void		free_all(t_data **d);
 
 /* functions */
 
+// ft_atoi.c
+int			ft_atoi(const char *str);
+
 // ft_calloc.c
 void		*ft_memset(void *b, int c, size_t len);
 void		*ft_calloc(size_t count, size_t size);
+
+// ft_isalnum.c
+int			ft_isalnum(char c);
+
+// ft_itoa.c
+char		*ft_itoa(char *str, int *maxdig, int count, int n);
 
 // ft_split.c
 int			mem_size(char const *s, char c);
