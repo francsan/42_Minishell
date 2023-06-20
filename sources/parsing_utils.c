@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 20:01:13 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:04:03 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,11 @@ void	run_checks_quotes(t_data **d, t_ints *n)
 		(*d)->tokens[n->i].f_doublequotes = 1;
 		n->j++;
 		while ((*d)->tokens[n->i].token[n->j] != '"')
+		{
+			if ((*d)->tokens[n->i].token[n->j] == '$')
+				(*d)->tokens[n->i].f_dollarsign = 1;
 			n->j++;
+		}
 		n->j++;
 	}
 	else if ((*d)->tokens[n->i].token[n->j] == '\'')

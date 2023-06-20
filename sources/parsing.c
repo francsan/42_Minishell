@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 20:57:48 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:35:01 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	sort_tokens(t_data **d, char **tokens)
 					run_checks(d, &n);
 			}
 		}
+		if ((*d)->tokens[n.i].f_dollarsign == 1)
+			expand_variable(d, &n);
 	}
 }
 

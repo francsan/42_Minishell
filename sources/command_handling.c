@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/15 20:13:55 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:48:10 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,7 @@ t_cmd	*add_cmd(t_cmd *cmd)
 void	handle_builtin_cmd(t_data **d, char **tokens)
 {
 	t_cmd	*comando;
-	int		i;
-	t_ints	n;
-	
-	i = 0;
-	n.i = 0;
+
 	comando = add_cmd(NULL);
 	if ((*d)->num_commands == 0 && (*d)->flag_builtin == 1)
 		exec_builtin(comando, tokens, comando->outfd);

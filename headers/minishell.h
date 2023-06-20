@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 20:27:47 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/20 23:19:13 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct t_token {
 	int		f_file;
 	int		f_singlequotes;
 	int		f_doublequotes;
+	int		f_dollarsign;
 	int		f_envvar;
 	int		f_command;
 	int		f_flag;
@@ -135,7 +136,7 @@ void		export_print(char **env, int out);
 
 // builtin.c
 int			pwd(void);
-int			env(char **envp); //t_cmd *cmd, int out 
+int			env(char **envp);
 int			echo(char **tokens);
 int			exec_builtin(t_cmd *cmd, char **tokens, int outfd);
 
@@ -163,6 +164,13 @@ char		**alloc_tokens_array(char *line);
 int			alloc_tokens_strings(char ***tokens, char *line);
 void		fill_tokens(char ***tokens, char *line, int token_num);
 char		**ft_minishell_split(char *line);
+
+// parsing_utils_2.c
+int			check_char(char c);
+char		**get_variable(t_data **d, t_ints *n);
+char		**get_values(char **vars);
+int			get_calloc_size(t_data **d, t_ints *n, char **vars, char **vars_values);
+void		expand_variable(t_data **d, t_ints *n);
 
 // parsing_utils.c
 int			try_paths(t_data **d, t_ints *n, int i);
