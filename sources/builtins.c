@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:51:46 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/27 19:54:25 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:02:40 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ int	built_exit(char **tokens, t_env *env)
 int	exec_builtin(t_cmd *cmd, char **tokens, int outfd)
 {
 	if (!ft_strncmp(*tokens, "cd", 3))
-		return (cd(tokens, env_func()));
+		return (built_cd(tokens, env_func()));
 	else if (!strncmp(*tokens, "unset", 6))
-		return (unset(cmd, env_func()));
+		return (built_unset(cmd, env_func()));
 	else if (!strncmp(*tokens, "export", 7))
-		return (export(tokens, env_func(), outfd));
+		return (built_export(tokens, env_func(), outfd));
 	else if (!strncmp(*tokens, "exit", 5))
-		return (exit_builtin(tokens, env_func()));
+		return (built_exit(tokens, env_func()));
 	else
 		return (0);
 }

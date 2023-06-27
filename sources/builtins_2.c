@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:08 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/27 19:56:34 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:02:03 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	built_unset(t_cmd *cmd, t_env *env)
 	i = -1;
 	while (cmd->args[++i])
 	{
-		if (check_unset(cmd, env->env, i))
+		if (built_check_unset(cmd, env->env, i))
 		{
 			env->status = env_set(cmd, env, i);
 			if (env->status)
