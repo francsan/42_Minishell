@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/20 20:04:03 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/27 20:14:40 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	run_checks(t_data **d, t_ints *n)
 			(*d)->tokens[n->i].f_redir_output = 1;
 		if ((*d)->tokens[n->i].token[n->j] == '-')
 			(*d)->tokens[n->i].f_flag = 1;
+		if ((*d)->tokens[n->i].token[n->j] == '$')
+			(*d)->tokens[n->i].f_dollarsign = 1;
 		n->j++;
 	}
 }
