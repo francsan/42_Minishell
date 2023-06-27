@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/20 19:48:10 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/27 19:48:19 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_cmd	*add_cmd(t_cmd *cmd)
 		return (NULL);
 	new->infd = 0;
 	new->outfd = 1;
-	new->next = NULL;	
+	new->next = NULL;
 	if (!cmd)
 	{
 		cmd = new;
@@ -36,13 +36,12 @@ t_cmd	*add_cmd(t_cmd *cmd)
 	return (new);
 }
 
-void	handle_builtin_cmd(t_data **d, char **tokens)
+void	handle_builtin_cmd(char **tokens)
 {
 	t_cmd	*comando;
 
 	comando = add_cmd(NULL);
-	if ((*d)->num_commands == 0 && (*d)->flag_builtin == 1)
-		exec_builtin(comando, tokens, comando->outfd);
+	exec_builtin(comando, tokens, comando->outfd);
 	free(comando);
 }
 
@@ -81,9 +80,9 @@ void	run_cmd(t_data **d, t_ints *n, char ***cmds)
 		execve(cmds[n->j][0], cmds[n->j], (*d)->env);
 		exit(0);
 	}
+	waitpid((*d)->pid[n->j], NULL, 0);
 	(*d)->old_fd = dup((*d)->fd[0]);
 	close_pipe(d);
-	waitpid((*d)->pid[n->j], NULL, 0);
 	n->j++;
 }
 

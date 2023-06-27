@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/20 23:19:13 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/27 19:46:40 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ typedef struct t_cmd {
 	t_cmd	*next;
 }	t_cmd;
 
-typedef struct t_signal	{
+typedef struct t_signal {
 	int	exit_status;
 }	t_signal;
 
@@ -116,28 +116,28 @@ void		print_array(char **arr);
 void		print_tokens(t_data **d, char **tokens);
 
 // builtins2.c
-int			check_unset(t_cmd *cmd, char **env, int i);
-int			unset(t_cmd *cmd, t_env *env);
-int			cd(char **tokens, t_env *env);
-int			export(char **tokens, t_env *env, int outfd);
-int			exit_builtin(char **tokens, t_env *env);
+int			built_check_unset(t_cmd *cmd, char **env, int i);
+int			built_unset(t_cmd *cmd, t_env *env);
+int			built_export(char **tokens, t_env *env, int outfd);
+
+// builtin_utils_2.c
+int			is_num(char *str);
+void		export_print(char **env, int out);
+int			var_pos(char *str, char **env);
+int			ft_len(char **env);
+int			handle_no_var(char **tokens, t_env *env, int i);
 
 // builtin_utils.c
-int			is_num(char *str);
+int			is_valid(char *str);
+int			strrlen(char *str, char c);
 int			env_set(t_cmd *cmd, t_env *env, int i);
-int			env_change(t_env *env);
 char		*get_var(char **env, char *envid);
 int			var_set(char **tokens);
-int			strrlen(char *str, char c);
-int 		is_valid(char *str);
-int			var_pos(char *str, char **env);
-int			handle_no_var(char **tokens, t_env *env, int i);
-void		export_print(char **env, int out);
 
 // builtin.c
-int			pwd(void);
-int			env(char **envp);
-int			echo(char **tokens);
+int			env_change(t_env *env);
+int			built_cd(char **tokens, t_env *env);
+int			built_exit(char **tokens, t_env *env);
 int			exec_builtin(t_cmd *cmd, char **tokens, int outfd);
 
 // command_handling_utils.c
@@ -148,7 +148,7 @@ int			get_pwd(t_data **d, char **pwd);
 
 // command_handling.c
 t_cmd		*add_cmd(t_cmd *cmd);
-void		handle_builtin_cmd(t_data **d, char **tokens);
+void		handle_builtin_cmd(char **tokens);
 void		handle_single_cmd(t_data **d);
 void		run_cmd(t_data **d, t_ints *n, char ***cmds);
 void		handle_multiple_cmds(t_data **d);
@@ -169,7 +169,8 @@ char		**ft_minishell_split(char *line);
 int			check_char(char c);
 char		**get_variable(t_data **d, t_ints *n);
 char		**get_values(char **vars);
-int			get_calloc_size(t_data **d, t_ints *n, char **vars, char **vars_values);
+int			get_calloc_size(t_data **d, t_ints *n, \
+			char **vars, char **vars_values);
 void		expand_variable(t_data **d, t_ints *n);
 
 // parsing_utils.c
@@ -187,7 +188,8 @@ int			parse_command(t_data *d, char *line);
 
 // pipes.c
 void		get_index(t_data **d, t_ints *n);
-void		check_for_redirs(t_data **d, t_ints *n, int *f_input, int *f_output);
+void		check_for_redirs(t_data **d, t_ints *n, \
+			int *f_input, int *f_output);
 void		close_pipe(t_data **d);
 void		handle_pipes(t_data **d, t_ints *n);
 
@@ -197,7 +199,7 @@ void		handle_redirections(t_data **d, t_ints *n, char *redir);
 void		check_redir(t_data **d, int cmd_num);
 
 // signals.c
-t_signal	*sig_func();
+t_signal	*sig_func(void);
 void		sig_handler(int sig);
 void		if_ctrl_d(t_data **d, char *buffer, char *line);
 

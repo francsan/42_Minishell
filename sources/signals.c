@@ -6,15 +6,15 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:40:22 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/15 18:40:47 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:55:35 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-t_signal *sig_func()
+t_signal	*sig_func(void)
 {
-	static t_signal sig;
+	static t_signal	sig;
 
 	return (&sig);
 }

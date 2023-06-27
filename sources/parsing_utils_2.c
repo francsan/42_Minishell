@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:03:53 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/20 23:17:10 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/27 19:48:58 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ char	**get_values(char **vars)
 		{
 			if (ft_strncmp(env[m.i], vars[m.j], ft_strlen(vars[m.j])) == 0)
 			{
-				vars_values[m.j] = ft_strdup(&env[m.i][ft_strlen(vars[m.j]) + 1]);
+				vars_values[m.j] = \
+				ft_strdup(&env[m.i][ft_strlen(vars[m.j]) + 1]);
 				m.j++;
 				break ;
 			}
