@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 16:07:50 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 22:52:38 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	parse_command(t_data *d, char *line)
 	// print_tokens(&d, tokens); // TESTING
 	if (d->num_commands == 0 && tokens[0])
 	{
+		g_exitvalue = 127;
 		printf("%s: command not found\n", tokens[0]);
 		i = -1;
 		while (d->tokens[++i].token)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:40:22 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 17:13:03 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 23:17:23 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	sig_handler(int sig)
 
 void	if_ctrl_d(t_data **d, char *buffer, char *line)
 {
-	unsigned char	status;
-
 	if (line)
 		return ;
 	rl_clear_history();
@@ -46,6 +44,5 @@ void	if_ctrl_d(t_data **d, char *buffer, char *line)
 	ft_strarr_free((*d)->env);
 	free(buffer);
 	free(line);
-	status = (unsigned char)(sig_func())->exit_status;
-	exit(status);
+	exit(g_exitvalue);
 }

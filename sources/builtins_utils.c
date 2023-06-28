@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:28 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 16:49:02 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 22:44:15 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	is_valid(char *str)
 		if (i == 0 && !((str[i] >= 'a' && str[i] <= 'z') || \
 		(str[i] >= 'A' && str[i] <= 'Z')))
 			return (0);
-		if (i && ft_isalnum(str[i]))
+		if (i && !ft_isalnum(str[i]))
 			return (0);
 	}
 	return (1);

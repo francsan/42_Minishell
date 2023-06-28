@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:51:46 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 16:50:02 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 23:15:44 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,36 @@ int	built_cd(char **tokens, t_env *env)
 
 int	built_exit(char **tokens, t_env *env)
 {
-	unsigned char	status;
-
 	printf("exit\n");
 	if (tokens[1] && !is_num(tokens[1]))
 	{
-		status = 2;
-		//print_error("numeric argument required\n");
+		g_exitvalue = 2;
+		printf("exit: %s: numeric argument required\n", tokens[1]);
+		return (1);
 	}
 	else if (tokens[1] && tokens[2])
 	{
-		status = 1;
-		//print_error("too many args");
-		return (status);
+		g_exitvalue = 1;
+		printf("exit: too many arguments\n");
+		return (1);
 	}
 	else if (tokens[1])
-		status = ft_atoi(tokens[1]);
+	{
+		g_exitvalue = ft_atoi(tokens[1]);
+		ft_strarr_free(tokens);
+		if (env->env)
+			ft_strarr_free(env->env);
+		rl_clear_history();
+		exit(g_exitvalue);
+	}
 	else
-		status = env->status;
-	free(tokens);
-	if (env->env)
-		free (env->env);
-	rl_clear_history();
-	exit(status);
+	{
+		ft_strarr_free(tokens);
+		if (env->env)
+			ft_strarr_free(env->env);
+		rl_clear_history();
+		exit(g_exitvalue);
+	}
 }
 
 int	exec_builtin(char **tokens, int outfd)
