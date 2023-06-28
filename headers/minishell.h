@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 16:51:45 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:57:05 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 
 // signal
 # include <signal.h>
+
+// errno
+# include <errno.h>
 
 /* strings & values */
 

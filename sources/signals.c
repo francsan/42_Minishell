@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:40:22 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/27 19:55:35 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:13:03 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	sig_handler(int sig)
 		return ;
 	if (sig == SIGINT)
 	{
-		sig_func()->exit_status = 130;
+		g_exitvalue = 130;
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);

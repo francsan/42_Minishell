@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:08 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 16:52:26 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:07:50 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,13 @@ int	built_export(char **tokens, t_env *env, int outfd)
 				env->env[j] = ft_strdup(tokens[i]);
 			}
 			else if (j == -1)
+			{
 				if (handle_no_var(tokens, env_func(), i))
-					return (225);
+				{
+					g_exitvalue = 225;
+					return (1);
+				}
+			}
 		}
 		else
 			return (0); //print_error("not a valid indentifier")

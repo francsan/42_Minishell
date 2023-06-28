@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:02:10 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/27 18:45:02 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:39:30 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,11 @@ void	check_redir(t_data **d, int cmd_num)
 			}
 			else
 				handle_redirections(d, &n, (*d)->tokens[n.i].token);
+		}
+		if ((*d)->infile < 0)
+		{
+			g_exitvalue = errno;
+			exit(g_exitvalue);
 		}
 		n.i++;
 	}

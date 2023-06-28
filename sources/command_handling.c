@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 16:50:37 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:18:15 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	handle_single_cmd(t_data **d)
 		execve(cmd[0], cmd, (*d)->env);
 		exit(0);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &g_exitvalue, 0);
 	ft_strarr_free(cmd);
 }
 
@@ -80,7 +80,7 @@ void	run_cmd(t_data **d, t_ints *n, char ***cmds)
 		execve(cmds[n->j][0], cmds[n->j], (*d)->env);
 		exit(0);
 	}
-	waitpid((*d)->pid[n->j], NULL, 0);
+	waitpid((*d)->pid[n->j], &g_exitvalue, 0);
 	(*d)->old_fd = dup((*d)->fd[0]);
 	close_pipe(d);
 	n->j++;
