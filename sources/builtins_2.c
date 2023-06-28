@@ -6,34 +6,34 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:08 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/27 20:02:03 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:52:26 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	built_check_unset(t_cmd *cmd, char **env, int i)
+int	built_check_unset(char **tokens, char **env, int i)
 {
 	int	j;
 
 	j = -1;
 	while (env[++j])
-		if (!ft_strncmp(cmd->args[i], env[j], \
-		(ft_strlen(cmd->args[i]) - 1)))
+		if (!ft_strncmp(tokens[i], env[j], \
+		(strrlen(tokens[i], -1) - 1)))
 			return (1);
 	return (0);
 }
 
-int	built_unset(t_cmd *cmd, t_env *env)
+int	built_unset(char **tokens, t_env *env)
 {
 	int	i;
 
 	i = -1;
-	while (cmd->args[++i])
+	while (tokens[++i])
 	{
-		if (built_check_unset(cmd, env->env, i))
+		if (built_check_unset(tokens, env->env, i))
 		{
-			env->status = env_set(cmd, env, i);
+			env->status = env_set(tokens, env, i);
 			if (env->status)
 				return (1);
 		}

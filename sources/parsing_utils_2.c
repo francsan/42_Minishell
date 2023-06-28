@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 20:03:53 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 12:33:38 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/28 16:37:40 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,14 @@ void	expand_variable(t_data **d, t_ints *n)
 	char	**vars_values;
 	char	*token;
 
+	if (ft_strncmp((*d)->tokens[n->i].token, "$?", 2) == 0)
+	{
+		free((*d)->tokens[n->i].token);
+		(*d)->tokens[n->i].token = ft_itoa_2(g_exitvalue);
+		return ;
+	}
 	vars = get_variable(d, n);
-	print_array(vars); // TESTING
 	vars_values = get_values(vars);
-	print_array(vars_values); // TESTING
 	token = ft_calloc(get_calloc_size(d, n, vars, vars_values), sizeof(char));
 	m.i = 0;
 	m.j = 0;

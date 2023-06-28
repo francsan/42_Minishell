@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/27 19:46:40 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:51:45 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ typedef struct t_ints {
 	int	l;
 }	t_ints;
 
-typedef struct t_builtins
-{
+typedef struct t_builtins {
 	int	echo;
 	int	cd;
 	int	pwd;
@@ -109,6 +108,10 @@ typedef struct t_signal {
 	int	exit_status;
 }	t_signal;
 
+/* globals */
+
+extern int	g_exitvalue;
+
 /* sources */
 
 // main.c TESTING
@@ -116,8 +119,8 @@ void		print_array(char **arr);
 void		print_tokens(t_data **d, char **tokens);
 
 // builtins2.c
-int			built_check_unset(t_cmd *cmd, char **env, int i);
-int			built_unset(t_cmd *cmd, t_env *env);
+int			built_check_unset(char **tokens, char **env, int i);
+int			built_unset(char **tokens, t_env *env);
 int			built_export(char **tokens, t_env *env, int outfd);
 
 // builtin_utils_2.c
@@ -130,7 +133,7 @@ int			handle_no_var(char **tokens, t_env *env, int i);
 // builtin_utils.c
 int			is_valid(char *str);
 int			strrlen(char *str, char c);
-int			env_set(t_cmd *cmd, t_env *env, int i);
+int			env_set(char **tokens, t_env *env, int i);
 char		*get_var(char **env, char *envid);
 int			var_set(char **tokens);
 
@@ -138,7 +141,7 @@ int			var_set(char **tokens);
 int			env_change(t_env *env);
 int			built_cd(char **tokens, t_env *env);
 int			built_exit(char **tokens, t_env *env);
-int			exec_builtin(t_cmd *cmd, char **tokens, int outfd);
+int			exec_builtin(char **tokens, int outfd);
 
 // command_handling_utils.c
 char		*remove_quotes(t_data **d, t_ints *n, char quotes);
@@ -226,7 +229,12 @@ void		*ft_calloc(size_t count, size_t size);
 // ft_isalnum.c
 int			ft_isalnum(char c);
 
-// ft_itoa.c
+// ft_itoa_2.c
+char		*rev_num(char *num);
+void		put_num(int n, char *num);
+char		*ft_itoa_2(int n);
+
+// ft_itoa.cfree(comando);
 char		*ft_itoa(char *str, int *maxdig, int count, int n);
 
 // ft_split.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 12:17:20 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/28 16:07:50 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	sort_tokens(t_data **d, char **tokens)
 int	parse_command(t_data *d, char *line)
 {
 	char	**tokens;
+	int		i;
 
 	if (!line)
 		return (1);
@@ -84,9 +85,17 @@ int	parse_command(t_data *d, char *line)
 	d->num_commands = 0;
 	d->flag_builtin = 0;
 	sort_tokens(&d, tokens);
-	if (d->num_commands == 1 && d->flag_builtin == 1)
+	// print_tokens(&d, tokens); // TESTING
+	if (d->num_commands == 0 && tokens[0])
+	{
+		printf("%s: command not found\n", tokens[0]);
+		i = -1;
+		while (d->tokens[++i].token)
+			free(d->tokens[i].token);
+	}
+	else if (d->num_commands == 1 && d->flag_builtin == 1)
 		handle_builtin_cmd(tokens);
-	if (d->num_commands == 1 && d->flag_builtin == 0)
+	else if (d->num_commands == 1 && d->flag_builtin == 0)
 		handle_single_cmd(&d);
 	else if (d->num_commands > 1)
 		handle_multiple_cmds(&d);

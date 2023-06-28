@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:36:59 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/27 19:47:45 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:45:00 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,31 @@ int	is_num(char *str)
 	return (1);
 }
 
+void	sort_env(char **env, int i, int j)
+{
+	char *tmp;
+
+	if (ft_strncmp(env[i], env[j], ft_strlen(env[i])) < 0)
+	{
+		tmp = env[i];
+		env[i] = env[j];
+		env[j] = tmp;
+	}
+}
+
 void	export_print(char **env, int out)
 {
 	int	i;
+	int	j;
 	int	len;
 
+	i = -1;
+	while (env[++i])
+	{
+		j = -1;
+		while (env[++j])
+			sort_env(env, i, j);
+	}
 	i = -1;
 	while (env[++i])
 	{

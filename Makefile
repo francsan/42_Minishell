@@ -12,7 +12,8 @@ HEADER		=	$(addprefix $(HEADER_DIR), $(HEADER_F))
 FUNCS_F		=	ft_calloc.c ft_split.c ft_strarr_cpy.c \
 				ft_strarr_free.c ft_strdup.c ft_strjoin.c \
 				ft_strlen.c ft_strncmp.c get_next_line.c \
-				ft_strchr.c ft_atoi.c ft_itoa.c ft_isalnum.c
+				ft_strchr.c ft_atoi.c ft_itoa.c ft_isalnum.c \
+				ft_itoa_2.c
 FUNCS_DIR	=	functions/
 FUNCS		=	$(addprefix $(FUNCS_DIR), $(FUNCS_F))
 SOURCE_F	=	main.c parsing.c minishell_split_utils.c \
