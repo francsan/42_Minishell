@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 21:05:29 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 12:14:33 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 		buffer = readline(PROMPT);
 		line = sort_line(buffer);
 		if_ctrl_d(&d, buffer, line);
-		if (line && ft_strlen(line) > 0)
+		if (buffer && ft_strlen(buffer) > 0)
 			add_history(buffer);
 		if (parse_command(d, line))
 			break ;
