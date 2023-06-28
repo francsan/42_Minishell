@@ -6,7 +6,7 @@
 /*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 23:16:54 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/28 23:42:56 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	print_tokens(t_data **d, char **tokens)
 	{
 		printf("%s%s%s\n", BLUE, (*d)->tokens[i].token, DEFAULT);
 		printf("Pipe: %i\n", (*d)->tokens[i].f_pipe);
-		printf("Input Redirection: %i\n", (*d)->tokens[i].f_redir_input);
-		printf("Output Redirection: %i\n", (*d)->tokens[i].f_redir_output);
+		printf("Input Redirection: %i\n", (*d)->tokens[i].f_r_in);
+		printf("Output Redirection: %i\n", (*d)->tokens[i].f_r_out);
 		printf("File: %i\n", (*d)->tokens[i].f_file);
 		printf("Single Quotes: %i\n", (*d)->tokens[i].f_singlequotes);
 		printf("Double Quotes: %i\n", (*d)->tokens[i].f_doublequotes);

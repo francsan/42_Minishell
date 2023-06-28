@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:47:34 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/22 19:07:06 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 23:42:56 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	check_for_redirs(t_data **d, t_ints *n, int *f_input, int *f_output)
 	*f_output = 0;
 	while ((*d)->tokens[n->i].token && (*d)->tokens[n->i].f_pipe == 0)
 	{
-		if ((*d)->tokens[n->i].f_redir_input == 1)
+		if ((*d)->tokens[n->i].f_r_in == 1)
 			*f_input = 1;
-		if ((*d)->tokens[n->i].f_redir_output == 1)
+		if ((*d)->tokens[n->i].f_r_out == 1)
 			*f_output = 1;
 		n->i++;
 	}

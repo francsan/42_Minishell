@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:08 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 17:07:50 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 00:02:37 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,24 @@ int	built_unset(char **tokens, t_env *env)
 
 int	built_export(char **tokens, t_env *env, int outfd)
 {
-	int	i;
-	int	j;
+	t_ints	n;
 
-	i = 0;
+	n.i = 0;
 	if (!tokens[1])
 		export_print(env->env, outfd);
-	while (tokens[++i])
+	while (tokens[++n.i])
 	{
-		if (is_valid(tokens[i]))
+		if (is_valid(tokens[n.i]))
 		{
-			j = var_pos(tokens[i], env->env);
-			if (j != -1 && tokens[i][strrlen(tokens[i], '=') - 1] == '=')
+			n.j = var_pos(tokens[n.i], env->env);
+			if (n.j != -1 && tokens[n.i][strrlen(tokens[n.i], '=') - 1] == '=')
 			{
-				free(env->env[j]);
-				env->env[j] = ft_strdup(tokens[i]);
+				free(env->env[n.j]);
+				env->env[n.j] = ft_strdup(tokens[n.i]);
 			}
-			else if (j == -1)
+			else if (n.j == -1)
 			{
-				if (handle_no_var(tokens, env_func(), i))
+				if (handle_no_var(tokens, env_func(), n.i))
 				{
 					g_exitvalue = 225;
 					return (1);
@@ -69,7 +68,11 @@ int	built_export(char **tokens, t_env *env, int outfd)
 			}
 		}
 		else
-			return (0); //print_error("not a valid indentifier")
+		{
+			g_exitvalue = 1;
+			printf("export: %s: not a valid identifier\n", tokens[1]);
+			return (0);
+		}
 	}
 	return (0);
 }

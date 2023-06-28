@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 16:17:54 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 23:42:56 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	run_checks(t_data **d, t_ints *n)
 		if ((*d)->tokens[n->i].token[n->j] == '|')
 			(*d)->tokens[n->i].f_pipe = 1;
 		if ((*d)->tokens[n->i].token[n->j] == '<')
-			(*d)->tokens[n->i].f_redir_input = 1;
+			(*d)->tokens[n->i].f_r_in = 1;
 		if ((*d)->tokens[n->i].token[n->j] == '>')
-			(*d)->tokens[n->i].f_redir_output = 1;
+			(*d)->tokens[n->i].f_r_out = 1;
 		if ((*d)->tokens[n->i].token[n->j] == '-')
 			(*d)->tokens[n->i].f_flag = 1;
 		if ((*d)->tokens[n->i].token[n->j] == '$')

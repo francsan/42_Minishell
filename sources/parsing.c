@@ -6,7 +6,7 @@
 /*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 22:52:38 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 00:23:03 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	parse_command(t_data *d, char *line)
 	d->num_commands = 0;
 	d->flag_builtin = 0;
 	sort_tokens(&d, tokens);
-	// print_tokens(&d, tokens); // TESTING
 	if (d->num_commands == 0 && tokens[0])
 	{
 		g_exitvalue = 127;

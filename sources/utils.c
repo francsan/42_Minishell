@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:26:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/15 16:57:59 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 23:54:46 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,24 @@ int	get_pipe_num(char *buffer)
 	return (j);
 }
 
+void	space_pipes(char *buffer, char **line, int *i, int *j)
+{
+	if (buffer[(*i)] == '|')
+	{
+		*line[(*j)] = ' ';
+		*line[(*j) + 1] = buffer[(*i)];
+		*line[(*j) + 2] = ' ';
+		(*i)++;
+		(*j) += 3;
+	}
+	else
+	{
+		(*line)[(*j)] = buffer[(*i)];
+		(*i)++;
+		(*j)++;
+	}
+}
+
 char	*sort_line(char *buffer)
 {
 	char	*line;
@@ -66,22 +84,7 @@ char	*sort_line(char *buffer)
 	i = 0;
 	j = 0;
 	while (buffer[i])
-	{
-		if (buffer[i] == '|')
-		{
-			line[j] = ' ';
-			line[j + 1] = buffer[i];
-			line[j + 2] = ' ';
-			i++;
-			j += 3;
-		}
-		else
-		{
-			line[j] = buffer[i];
-			i++;
-			j++;
-		}
-	}
+		space_pipes(buffer, &line, &i, &j);
 	return (line);
 }
 

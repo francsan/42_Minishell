@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 16:57:05 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 00:28:20 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,27 +47,28 @@
 /* structs */
 
 typedef struct t_ints {
-	int	i;
-	int	j;
-	int	k;
-	int	l;
+	int		i;
+	int		j;
+	int		k;
+	int		l;
+	char	*tmp;
 }	t_ints;
 
 typedef struct t_builtins {
-	int	echo;
-	int	cd;
-	int	pwd;
-	int	export;
-	int	unset;
-	int	env;
-	int	exit;
+	int		echo;
+	int		cd;
+	int		pwd;
+	int		export;
+	int		unset;
+	int		env;
+	int		exit;
 }	t_builtins;
 
 typedef struct t_token {
 	char	*token;
 	int		f_pipe;
-	int		f_redir_input;
-	int		f_redir_output;
+	int		f_r_in;
+	int		f_r_out;
 	int		f_file;
 	int		f_singlequotes;
 	int		f_doublequotes;
@@ -108,7 +109,7 @@ typedef struct t_cmd {
 }	t_cmd;
 
 typedef struct t_signal {
-	int	exit_status;
+	int		exit_status;
 }	t_signal;
 
 /* globals */
@@ -129,6 +130,8 @@ int			built_export(char **tokens, t_env *env, int outfd);
 // builtin_utils_2.c
 int			is_num(char *str);
 void		export_print(char **env, int out);
+
+// builtin_utils_3.c
 int			var_pos(char *str, char **env);
 int			ft_len(char **env);
 int			handle_no_var(char **tokens, t_env *env, int i);
@@ -145,6 +148,10 @@ int			env_change(t_env *env);
 int			built_cd(char **tokens, t_env *env);
 int			built_exit(char **tokens, t_env *env);
 int			exec_builtin(char **tokens, int outfd);
+
+// command_handling_utils_2.c
+void		remove_quotes_2(t_data **d, t_ints *n, t_ints *m, char quotes);
+void		get_cmd_2(t_data **d, t_ints *n, t_ints *m, char ***cmd);
 
 // command_handling_utils.c
 char		*remove_quotes(t_data **d, t_ints *n, char quotes);
@@ -199,8 +206,13 @@ void		check_for_redirs(t_data **d, t_ints *n, \
 void		close_pipe(t_data **d);
 void		handle_pipes(t_data **d, t_ints *n);
 
+// redirect_2.c
+void		redirect_input(t_data **d, t_ints *n, char *redir);
+void		redirect_output(t_data **d, t_ints *n, char *redir);
+
 // redirect.c
 char		*skip_quotes(t_data **d, t_ints *n);
+void		handle_heredoc(t_data **d, char *delimiter);
 void		handle_redirections(t_data **d, t_ints *n, char *redir);
 void		check_redir(t_data **d, int cmd_num);
 
@@ -217,6 +229,7 @@ char		**env_create(char **envp);
 // utils.c
 void		get_paths(t_data **d);
 int			get_pipe_num(char *buffer);
+void		space_pipes(char *buffer, char **line, int *i, int *j);
 char		*sort_line(char *buffer);
 void		free_all(t_data **d);
 

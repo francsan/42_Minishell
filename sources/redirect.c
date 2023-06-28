@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:02:10 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 17:39:30 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/28 23:43:00 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,39 +64,11 @@ void	handle_redirections(t_data **d, t_ints *n, char *redir)
 {
 	if (redir[0] == '<')
 	{
-		if (redir[1] == '\0')
-			(*d)->infile = open((*d)->tokens[n->i + 1].token, O_RDONLY);
-		else if (redir[1] == '<')
-		{
-			if (redir[2] == '\0')
-				handle_heredoc(d, (*d)->tokens[n->i + 1].token);
-			else if (redir[2])
-				handle_heredoc(d, &redir[2]);
-		}
-		else if (redir[1] != '<' && redir[1])
-			(*d)->infile = open(&redir[1], O_RDONLY);
-		dup2((*d)->infile, STDIN_FILENO);
-		close((*d)->infile);
+		redirect_input(d, n, redir);
 	}
 	else if (redir[0] == '>')
 	{
-		if (redir[1] == '\0')
-			(*d)->outfile = open((*d)->tokens[n->i + 1].token, \
-				O_CREAT | O_TRUNC | O_WRONLY, 0666);
-		else if (redir[1] == '>')
-		{
-			if (redir[2] == '\0')
-				(*d)->outfile = open((*d)->tokens[n->i + 1].token, \
-				O_CREAT | O_APPEND | O_WRONLY, 0666);
-			else if (redir[2])
-				(*d)->outfile = open(&redir[2], \
-				O_CREAT | O_APPEND | O_WRONLY, 0666);
-		}
-		else if (redir[1] != '>' && redir[1])
-			(*d)->outfile = open(&redir[1], \
-				O_CREAT | O_TRUNC | O_WRONLY, 0666);
-		dup2((*d)->outfile, STDOUT_FILENO);
-		close((*d)->outfile);
+		redirect_output(d, n, redir);
 	}
 }
 
@@ -108,8 +80,7 @@ void	check_redir(t_data **d, int cmd_num)
 	n.i = cmd_num;
 	while ((*d)->tokens[n.i].token && (*d)->tokens[n.i].f_pipe == 0)
 	{
-		if ((*d)->tokens[n.i].f_redir_input == 1 \
-			|| (*d)->tokens[n.i].f_redir_output == 1)
+		if ((*d)->tokens[n.i].f_r_in == 1 || (*d)->tokens[n.i].f_r_out == 1)
 		{
 			if ((*d)->tokens[n.i].f_singlequotes == 1 \
 				|| (*d)->tokens[n.i].f_doublequotes == 1)

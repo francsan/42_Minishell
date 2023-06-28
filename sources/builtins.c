@@ -6,7 +6,7 @@
 /*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:51:46 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 23:15:44 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/28 23:52:17 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,27 @@ int	built_cd(char **tokens, t_env *env)
 			return (1);
 	if (tokens[2])
 	{
-		//error too many args
+		g_exitvalue = 1;
+		printf("cd: too many arguments");
 		return (1);
 	}
-	if (chdir(tokens[1]))
+	if (chdir(tokens[1]) != 0)
 	{
-		//error
+		g_exitvalue = 1;
+		printf("cd: %s: No such file or directory", tokens[1]);
 		return (1);
 	}
 	if (env_change(env))
 		return (1);
 	return (0);
+}
+
+void	ft_exit(char **tokens, t_env *env)
+{
+	ft_strarr_free(tokens);
+	if (env->env)
+		ft_strarr_free(env->env);
+	rl_clear_history();
 }
 
 int	built_exit(char **tokens, t_env *env)
@@ -73,20 +83,14 @@ int	built_exit(char **tokens, t_env *env)
 	else if (tokens[1])
 	{
 		g_exitvalue = ft_atoi(tokens[1]);
-		ft_strarr_free(tokens);
-		if (env->env)
-			ft_strarr_free(env->env);
-		rl_clear_history();
-		exit(g_exitvalue);
+		ft_exit(tokens, env);
 	}
 	else
 	{
-		ft_strarr_free(tokens);
-		if (env->env)
-			ft_strarr_free(env->env);
-		rl_clear_history();
+		ft_exit(tokens, env);
 		exit(g_exitvalue);
 	}
+	return (0);
 }
 
 int	exec_builtin(char **tokens, int outfd)

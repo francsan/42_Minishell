@@ -6,7 +6,7 @@
 /*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:28 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 22:44:15 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/28 23:28:43 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	env_set(char **tokens, t_env *env, int i)
 	return (0);
 }
 
-char	*get_var(char **env, char *envid) //static?
+char	*get_var(char **env, char *envid)
 {
 	int		i;
 	char	*val;

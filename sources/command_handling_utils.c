@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 19:18:41 by francsan          #+#    #+#             */
-/*   Updated: 2023/05/22 19:31:25 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 00:20:52 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 char	*remove_quotes(t_data **d, t_ints *n, char quotes)
 {
 	t_ints	m;
-	char	*quote;
 
 	m.l = 0;
 	while (m.l < 2)
@@ -24,28 +23,12 @@ char	*remove_quotes(t_data **d, t_ints *n, char quotes)
 		m.j = 0;
 		m.k = 0;
 		while ((*d)->tokens[n->i].token[m.i] && m.j != 2)
-		{
-			if ((*d)->tokens[n->i].token[m.i] == quotes \
-				|| (*d)->tokens[n->i].token[m.i] == '<' \
-				|| (*d)->tokens[n->i].token[m.i] == '>')
-			{
-				if ((*d)->tokens[n->i].token[m.i] == quotes)
-					m.j++;
-				m.i++;
-			}
-			else
-			{
-				if (m.l == 1)
-					quote[m.k] = (*d)->tokens[n->i].token[m.i];
-				m.i++;
-				m.k++;
-			}
-		}
+			remove_quotes_2(d, n, &m, quotes);
 		if (m.l == 0)
-			quote = ft_calloc(m.k + 1, sizeof(char));
+			m.tmp = ft_calloc(m.k + 1, sizeof(char));
 		m.l++;
 	}
-	return (quote);
+	return (m.tmp);
 }
 
 void	skip_redir(t_data **d, t_ints *n)
@@ -85,27 +68,7 @@ char	**get_cmd(t_data **d, t_ints *n)
 	cmd = ft_calloc(m.i - n->i + 1, sizeof(char *));
 	m.j = 0;
 	while ((*d)->tokens[n->i].token && (*d)->tokens[n->i].f_pipe == 0)
-	{
-		if ((*d)->tokens[n->i].f_doublequotes == 1 \
-			|| (*d)->tokens[n->i].f_singlequotes == 1)
-		{
-			if ((*d)->tokens[n->i].f_doublequotes == 1)
-				cmd[m.j] = remove_quotes(d, n, '"');
-			else if ((*d)->tokens[n->i].f_singlequotes == 1)
-				cmd[m.j] = remove_quotes(d, n, '\'');
-			n->i++;
-			m.j++;
-		}
-		else if ((*d)->tokens[n->i].f_redir_input == 1 \
-			|| (*d)->tokens[n->i].f_redir_output == 1)
-			skip_redir(d, n);
-		else
-		{
-			cmd[m.j] = ft_strdup((*d)->tokens[n->i].token);
-			n->i++;
-			m.j++;
-		}
-	}
+		get_cmd_2(d, n, &m, &cmd);
 	return (cmd);
 }
 
