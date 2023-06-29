@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:08 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/29 00:02:37 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 19:23:20 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	built_export(char **tokens, t_env *env, int outfd)
 	{
 		if (is_valid(tokens[n.i]))
 		{
-			n.j = var_pos(tokens[n.i], env->env);
+			n.j = check_var_exist(tokens[n.i], env->env);
 			if (n.j != -1 && tokens[n.i][strrlen(tokens[n.i], '=') - 1] == '=')
 			{
 				free(env->env[n.j]);
@@ -60,9 +60,9 @@ int	built_export(char **tokens, t_env *env, int outfd)
 			}
 			else if (n.j == -1)
 			{
-				if (handle_no_var(tokens, env_func(), n.i))
+				if (handle_new_var(tokens, env_func(), n.i))
 				{
-					g_exitvalue = 225;
+					g_exitvalue = 255;
 					return (1);
 				}
 			}

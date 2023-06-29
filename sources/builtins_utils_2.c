@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:36:59 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/29 00:26:48 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 19:56:57 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,14 @@ void	export_print(char **env, int out)
 		len = strrlen(env[i], '=');
 		write(out, "declare -x ", 11);
 		write(out, env[i], len);
-		if (env[i][len - 1] != '=')
-			write(out, "=", 1);
-		write(out, "\"", 1);
-		if (env[i][len])
-			write(out, env[i] + len, strrlen(env[i] + len, -1));
-		write(out, "\"\n", 2);
+		if (env[i][len - 1] == '=')
+		{
+			write(out, "\"", 1);
+			if (env[i][len])
+				write(out, env[i] + len, strrlen(env[i] + len, -1));
+			write(out, "\"\n", 2);
+		}
+		else
+			write(out, "\n", 1);
 	}
 }

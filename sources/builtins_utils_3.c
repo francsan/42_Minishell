@@ -3,23 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 00:26:04 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 00:29:04 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 19:41:17 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	var_pos(char *str, char **env)
+int	check_var_exist(char *str, char **env)
 {
-	int	i;
+	int		i;
+	char	*temp;
 
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	temp = ft_calloc(i + 1, sizeof(char));
+	i = 0;
+	while (str[i] && str[i] != '=')
+	{
+		temp[i] = str[i];
+		i++;
+	}
 	i = -1;
 	while (env[++i])
-		if (!ft_strncmp(str, env[i], strrlen(env[i], '=') - 1))
+		if (ft_strncmp(temp, env[i], ft_strlen(temp)) == 0)
 			return (i);
+	free(temp);
 	return (-1);
 }
 
@@ -33,7 +45,7 @@ int	ft_len(char **env)
 	return (i);
 }
 
-int	handle_no_var(char **tokens, t_env *env, int i)
+int	handle_new_var(char **tokens, t_env *env, int i)
 {
 	char	**tmp;
 	int		j;

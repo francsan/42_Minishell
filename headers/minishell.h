@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 19:05:24 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:24:31 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,9 @@ int			is_num(char *str);
 void		export_print(char **env, int out);
 
 // builtin_utils_3.c
-int			var_pos(char *str, char **env);
+int			check_var_exist(char *str, char **env);
 int			ft_len(char **env);
-int			handle_no_var(char **tokens, t_env *env, int i);
+int			handle_new_var(char **tokens, t_env *env, int i);
 
 // builtin_utils.c
 int			is_valid(char *str);

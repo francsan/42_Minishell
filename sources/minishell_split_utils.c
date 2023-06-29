@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_minishell_split_utils.c                         :+:      :+:    :+:   */
+/*   minishell_split_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 16:17:08 by francisco         #+#    #+#             */
-/*   Updated: 2023/05/03 16:03:01 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:57:21 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	get_quote_len(t_ints *n, char *line, char quote)
 	while (line[n->j] && line[n->j] != quote)
 	{
 		if (quote == '"' && line[n->j] == '\\')
-				n->j += 2;
+			n->j += 2;
 		else
 			n->j++;
 	}
