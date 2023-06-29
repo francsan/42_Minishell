@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling_utils_2.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 00:05:43 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 00:20:56 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 17:15:49 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	get_cmd_2(t_data **d, t_ints *n, t_ints *m, char ***cmd)
 		|| (*d)->tokens[n->i].f_singlequotes == 1)
 	{
 		if ((*d)->tokens[n->i].f_doublequotes == 1)
-			*cmd[m->j] = remove_quotes(d, n, '"');
+			(*cmd)[m->j] = remove_quotes(d, n, '"');
 		else if ((*d)->tokens[n->i].f_singlequotes == 1)
-			*cmd[m->j] = remove_quotes(d, n, '\'');
+			(*cmd)[m->j] = remove_quotes(d, n, '\'');
 		n->i++;
 		m->j++;
 	}
@@ -48,7 +48,7 @@ void	get_cmd_2(t_data **d, t_ints *n, t_ints *m, char ***cmd)
 		skip_redir(d, n);
 	else
 	{
-		*cmd[m->j] = ft_strdup((*d)->tokens[n->i].token);
+		(*cmd)[m->j] = ft_strdup((*d)->tokens[n->i].token);
 		n->i++;
 		m->j++;
 	}

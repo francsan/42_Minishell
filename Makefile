@@ -2,7 +2,7 @@
 NAME		=	minishell
 CC			=	cc
 FLAGS		=	-Wall -Wextra -Werror
-FSAN		=	-fsanitize=address -g
+FSAN		=	-g #-fsanitize=address
 RM			=	rm -rf
 
 #FILES, DIRECTORIES AND PATHS

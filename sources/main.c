@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 23:42:56 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 17:14:24 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	print_tokens(t_data **d, char **tokens)
 		int	j = -1;
 		while (++j < 7)
 			printf("Builtins[%i] = %i\n", j, (*d)->tokens->f_builtins[j]);
-		printf("\n");
 		printf("Dollar Variable: %i\n", (*d)->tokens[i].f_dollarsign);
+		printf("\n");
 	}
 }
 // JUST FOR TESTING

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:26:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 23:54:46 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 17:09:48 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	space_pipes(char *buffer, char **line, int *i, int *j)
 {
 	if (buffer[(*i)] == '|')
 	{
-		*line[(*j)] = ' ';
-		*line[(*j) + 1] = buffer[(*i)];
-		*line[(*j) + 2] = ' ';
+		(*line)[(*j)] = ' ';
+		(*line)[(*j) + 1] = buffer[(*i)];
+		(*line)[(*j) + 2] = ' ';
 		(*i)++;
 		(*j) += 3;
 	}
