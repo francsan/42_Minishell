@@ -24,7 +24,7 @@ SOURCE_F	=	main.c parsing.c minishell_split_utils.c \
 				builtins_utils.c utils_2.c parsing_utils_2.c \
 				builtins_utils_2.c redirect_2.c \
 				command_handling_utils_2.c \
-				builtins_utils_3.c
+				builtins_utils_3.c parsing_utils_3.c
 SOURCE_DIR	=	sources/
 SOURCE		=	$(addprefix $(SOURCE_DIR), $(SOURCE_F))
 

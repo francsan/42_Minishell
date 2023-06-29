@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 17:21:04 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:03:56 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	fill_tokens_struct(t_data **d, char **tokens)
 	n.i = 0;
 	while (tokens[n.i])
 		n.i++;
-	(*d)->tokens = ft_calloc(n.i, sizeof(t_token));
+	(*d)->tokens = ft_calloc(n.i + 1, sizeof(t_token));
 	n.i = -1;
 	while (tokens[++n.i])
 		(*d)->tokens[n.i].token = ft_strdup(tokens[n.i]);
@@ -72,34 +72,26 @@ void	sort_tokens(t_data **d, char **tokens)
 	}
 }
 
-int	parse_command(t_data *d, char *line)
+int	parse_command(t_data **d, char *line)
 {
 	char	**tokens;
-	int		i;
 
 	if (!line)
 		return (1);
 	tokens = ft_minishell_split(line);
 	if (!tokens)
 		return (1);
-	d->num_commands = 0;
-	d->flag_builtin = 0;
-	sort_tokens(&d, tokens);
-	// print_tokens(&d, tokens); // TESTING
-	if (d->num_commands == 0 && tokens[0])
-	{
-		g_exitvalue = 127;
-		printf("%s: command not found\n", tokens[0]);
-		i = -1;
-		while (d->tokens[++i].token)
-			free(d->tokens[i].token);
-	}
-	else if (d->num_commands == 1 && d->flag_builtin == 1)
-		handle_builtin_cmd(tokens);
-	else if (d->num_commands == 1 && d->flag_builtin == 0)
-		handle_single_cmd(&d);
-	else if (d->num_commands > 1)
-		handle_multiple_cmds(&d);
+	(*d)->num_commands = 0;
+	(*d)->flag_builtin = 0;
+	sort_tokens(d, tokens);
+	if ((*d)->num_commands == 0 && tokens[0])
+		cmd_not_found(d, tokens);
+	else if ((*d)->num_commands == 1 && (*d)->flag_builtin == 1)
+		handle_builtin_cmd(d, tokens);
+	else if ((*d)->num_commands == 1 && (*d)->flag_builtin == 0)
+		handle_single_cmd(d);
+	else if ((*d)->num_commands > 1)
+		handle_multiple_cmds(d);
 	ft_strarr_free(tokens);
 	return (0);
 }

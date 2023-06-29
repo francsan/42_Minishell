@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:51:46 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 23:52:17 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 18:01:59 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,16 @@ int	built_cd(char **tokens, t_env *env)
 	return (0);
 }
 
-void	ft_exit(char **tokens, t_env *env)
+void	ft_exit(t_data **d, char **tokens, t_env *env)
 {
+	(void)d;
 	ft_strarr_free(tokens);
 	if (env->env)
 		ft_strarr_free(env->env);
 	rl_clear_history();
 }
 
-int	built_exit(char **tokens, t_env *env)
+int	built_exit(t_data **d, char **tokens, t_env *env)
 {
 	printf("exit\n");
 	if (tokens[1] && !is_num(tokens[1]))
@@ -83,17 +84,18 @@ int	built_exit(char **tokens, t_env *env)
 	else if (tokens[1])
 	{
 		g_exitvalue = ft_atoi(tokens[1]);
-		ft_exit(tokens, env);
+		ft_exit(d, tokens, env);
+		exit(g_exitvalue);
 	}
 	else
 	{
-		ft_exit(tokens, env);
+		ft_exit(d, tokens, env);
 		exit(g_exitvalue);
 	}
 	return (0);
 }
 
-int	exec_builtin(char **tokens, int outfd)
+int	exec_builtin(t_data **d, char **tokens, int outfd)
 {
 	if (!ft_strncmp(*tokens, "cd", 3))
 		return (built_cd(tokens, env_func()));
@@ -102,7 +104,7 @@ int	exec_builtin(char **tokens, int outfd)
 	else if (!strncmp(*tokens, "export", 7))
 		return (built_export(tokens, env_func(), outfd));
 	else if (!strncmp(*tokens, "exit", 5))
-		return (built_exit(tokens, env_func()));
+		return (built_exit(d, tokens, env_func()));
 	else
 		return (0);
 }

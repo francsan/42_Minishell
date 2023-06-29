@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 19:11:37 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/27 20:00:24 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:39:17 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ char	**env_create(char **envp)
 	int		i;
 	char	**env;
 
-	i = -1;
-	while (envp[++i])
-		;
-	env = ft_calloc((i + 1), sizeof(char *));
+	i = 0;
+	while (envp[i])
+		i++;
+	env = ft_calloc(i + 1, sizeof(char *));
 	if (!env)
 		return (NULL);
 	i = -1;

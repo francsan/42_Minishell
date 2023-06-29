@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 17:05:02 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 19:05:24 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ typedef struct t_signal {
 
 /* globals */
 
-extern int	g_exitvalue;
+extern int				g_exitvalue;
 
 /* sources */
 
@@ -146,8 +146,9 @@ int			var_set(char **tokens);
 // builtin.c
 int			env_change(t_env *env);
 int			built_cd(char **tokens, t_env *env);
-int			built_exit(char **tokens, t_env *env);
-int			exec_builtin(char **tokens, int outfd);
+void		ft_exit(t_data **d, char **tokens, t_env *env);
+int			built_exit(t_data **d, char **tokens, t_env *env);
+int			exec_builtin(t_data **d, char **tokens, int outfd);
 
 // command_handling_utils_2.c
 void		remove_quotes_2(t_data **d, t_ints *n, t_ints *m, char quotes);
@@ -161,7 +162,7 @@ int			get_pwd(t_data **d, char **pwd);
 
 // command_handling.c
 t_cmd		*add_cmd(t_cmd *cmd);
-void		handle_builtin_cmd(char **tokens);
+void		handle_builtin_cmd(t_data **d, char **tokens);
 void		handle_single_cmd(t_data **d);
 void		run_cmd(t_data **d, t_ints *n, char ***cmds);
 void		handle_multiple_cmds(t_data **d);
@@ -186,18 +187,26 @@ int			get_calloc_size(t_data **d, t_ints *n, \
 			char **vars, char **vars_values);
 void		expand_variable(t_data **d, t_ints *n);
 
+// parsing_utils_3.c
+void		get_variable_2(t_ints *m, char *token, char ***vars);
+void		get_values_2(t_ints *m, char ***vars_values, \
+			char **vars, char **env);
+char		*expand_variable_2(t_data **d, t_ints *n, \
+			char **vars, char **vars_values);
+
 // parsing_utils.c
 int			try_paths(t_data **d, t_ints *n, int i);
 int			check_for_command(t_data **d, t_ints *n);
 void		run_checks(t_data **d, t_ints *n);
 void		run_checks_quotes(t_data **d, t_ints *n);
+void		cmd_not_found(t_data **d, char **tokens);
 
 // parsing.c
 void		fill_tokens_struct(t_data **d, char **tokens);
 int			fill_flags(t_data **d, t_ints *n, int builtin);
 int			check_for_builtin(t_data **d, t_ints *n);
 void		sort_tokens(t_data **d, char **tokens);
-int			parse_command(t_data *d, char *line);
+int			parse_command(t_data **d, char *line);
 
 // pipes.c
 void		get_index(t_data **d, t_ints *n);

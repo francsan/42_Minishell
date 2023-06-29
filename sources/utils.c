@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:26:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 17:09:48 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:59:50 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,16 @@ void	free_all(t_data **d)
 {
 	int	i;
 
-	i = -1;
-	while ((*d)->tokens[++i].token)
-		free((*d)->tokens[i].token);
-	free((*d)->tokens);
+	i = 0;
+	if ((*d)->tokens)
+	{
+		while ((*d)->tokens[i].token)
+		{
+			free((*d)->tokens[i].token);
+			i++;
+		}
+		free((*d)->tokens);
+	}
 	ft_strarr_free((*d)->paths);
 	ft_strarr_free((*d)->env);
 	free(d);

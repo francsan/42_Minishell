@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 17:18:15 by francsan         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:55:02 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ t_cmd	*add_cmd(t_cmd *cmd)
 	return (new);
 }
 
-void	handle_builtin_cmd(char **tokens)
+void	handle_builtin_cmd(t_data **d, char **tokens)
 {
 	t_cmd	*comando;
 
 	comando = add_cmd(NULL);
-	exec_builtin(tokens, comando->outfd);
+	exec_builtin(d, tokens, comando->outfd);
 	free(comando);
 }
 

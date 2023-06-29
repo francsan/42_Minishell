@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 23:42:56 by francisco        ###   ########.fr       */
+/*   Updated: 2023/06/29 18:45:00 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,15 @@ void	run_checks_quotes(t_data **d, t_ints *n)
 			n->j++;
 		n->j++;
 	}
+}
+
+void	cmd_not_found(t_data **d, char **tokens)
+{
+	int	i;
+
+	g_exitvalue = 127;
+	printf("%s: command not found\n", tokens[0]);
+	i = -1;
+	while ((*d)->tokens[++i].token)
+		free((*d)->tokens[i].token);
 }
