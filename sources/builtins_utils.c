@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:28 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/29 19:58:02 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:23:40 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,13 @@ int	strrlen(char *str, char c)
 int	env_set(char **tokens, t_env *env, int i)
 {
 	char	**tmp;
+	char	*temp1;
 	int		len;
 	int		j;
 	int		k;
 
 	tmp = env->env;
+	// ft_strarr_free(env->env);
 	len = -1;
 	while (env->env[++len])
 		;
@@ -58,12 +60,14 @@ int	env_set(char **tokens, t_env *env, int i)
 	k = 0;
 	while (tmp[++j])
 	{
-		if (!ft_strncmp(tokens[i], tmp[j], strrlen(tokens[i], -1)))
+		problem_solver(tmp[j], &temp1);
+		if (ft_strncmp(tokens[i], temp1, ft_strlen(temp1)) == 0)
 			free(tmp[j]);
 		else
 			env->env[k++] = tmp[j];
+		free(temp1);
 	}
-	free(tmp);
+	// ft_strarr_free(tmp);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:40:22 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/28 23:17:23 by francisco        ###   ########.fr       */
+/*   Updated: 2023/07/18 18:47:55 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	sig_handler(int sig)
 	return ;
 }
 
-void	if_ctrl_d(t_data **d, char *buffer, char *line)
+void	if_ctrl_d(t_data **d, char *buffer, char *line, t_env *env)
 {
 	if (line)
 		return ;
@@ -42,6 +42,7 @@ void	if_ctrl_d(t_data **d, char *buffer, char *line)
 	write(1, "exit\n", 5);
 	ft_strarr_free((*d)->paths);
 	ft_strarr_free((*d)->env);
+	ft_strarr_free(env->env);
 	free(buffer);
 	free(line);
 	exit(g_exitvalue);

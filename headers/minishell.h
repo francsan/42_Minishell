@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 19:24:31 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:34:26 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ int			is_num(char *str);
 void		export_print(char **env, int out);
 
 // builtin_utils_3.c
+void		problem_solver(char *str, char **temp);
 int			check_var_exist(char *str, char **env);
 int			ft_len(char **env);
 int			handle_new_var(char **tokens, t_env *env, int i);
@@ -228,7 +229,7 @@ void		check_redir(t_data **d, int cmd_num);
 // signals.c
 t_signal	*sig_func(void);
 void		sig_handler(int sig);
-void		if_ctrl_d(t_data **d, char *buffer, char *line);
+void		if_ctrl_d(t_data **d, char *buffer, char *line, t_env *env);
 
 // utils_2.c
 t_env		*env_func(void);
@@ -240,7 +241,7 @@ void		get_paths(t_data **d);
 int			get_pipe_num(char *buffer);
 void		space_pipes(char *buffer, char **line, int *i, int *j);
 char		*sort_line(char *buffer);
-void		free_all(t_data **d);
+void		free_all(t_data **d, t_env *env);
 
 /* functions */
 

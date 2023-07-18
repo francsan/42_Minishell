@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 19:55:46 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:33:27 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	run_shell(t_data **d)
 
 	buffer = readline(PROMPT);
 	line = sort_line(buffer);
-	if_ctrl_d(d, buffer, line);
+	if_ctrl_d(d, buffer, line, env_func());
 	if (buffer && ft_strlen(buffer) > 0)
 		add_history(buffer);
 	if (parse_command(d, line))
@@ -94,6 +94,6 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 		if (run_shell(&d))
 			break ;
-	free_all(&d);
+	free_all(&d, env_func());
 	return (g_exitvalue);
 }

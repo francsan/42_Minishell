@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:26:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 17:59:50 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:48:00 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*sort_line(char *buffer)
 	return (line);
 }
 
-void	free_all(t_data **d)
+void	free_all(t_data **d, t_env *env)
 {
 	int	i;
 
@@ -104,5 +104,6 @@ void	free_all(t_data **d)
 	}
 	ft_strarr_free((*d)->paths);
 	ft_strarr_free((*d)->env);
+	ft_strarr_free(env->env);
 	free(d);
 }

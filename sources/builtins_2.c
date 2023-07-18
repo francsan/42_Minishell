@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:08 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/29 19:23:20 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:48:09 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,33 @@
 
 int	built_check_unset(char **tokens, char **env, int i)
 {
-	int	j;
+	int		j;
+	char	*temp;
 
 	j = -1;
 	while (env[++j])
-		if (!ft_strncmp(tokens[i], env[j], \
-		(strrlen(tokens[i], -1) - 1)))
-			return (1);
+	{
+		// printf("%s%s%s\n", BLUE, tokens[i], DEFAULT);
+		problem_solver(env[j], &temp);
+		// printf("%s%s%s\n", GREEN, temp, DEFAULT);
+		if (ft_strlen(tokens[i]) >= ft_strlen(temp))
+		{
+			if (ft_strncmp(tokens[i], temp, ft_strlen(tokens[i])) == 0)
+			{
+				free(temp);
+				return (1);
+			}
+		}
+		else
+		{
+			if (ft_strncmp(tokens[i], temp, ft_strlen(temp)) == 0)
+			{
+				free(temp);
+				return (1);
+			}
+		}
+		free(temp);
+	}
 	return (0);
 }
 
