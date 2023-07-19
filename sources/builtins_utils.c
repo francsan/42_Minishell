@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:28 by francsan          #+#    #+#             */
-/*   Updated: 2023/07/18 18:23:40 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/19 21:23:16 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ int	env_set(char **tokens, t_env *env, int i)
 	int		j;
 	int		k;
 
-	tmp = env->env;
-	// ft_strarr_free(env->env);
-	len = -1;
-	while (env->env[++len])
-		;
-	env->env = ft_calloc(len, sizeof(char *));
+	tmp = ft_strarr_copy(env->env);
+	ft_strarr_free(env->env);
+	len = 0;
+	while (tmp[len])
+		len++;
+	env->env = ft_calloc(len + 1, sizeof(char *));
 	if (!env->env)
 		return (1);
 	j = -1;
@@ -61,13 +61,11 @@ int	env_set(char **tokens, t_env *env, int i)
 	while (tmp[++j])
 	{
 		problem_solver(tmp[j], &temp1);
-		if (ft_strncmp(tokens[i], temp1, ft_strlen(temp1)) == 0)
-			free(tmp[j]);
-		else
-			env->env[k++] = tmp[j];
+		if (ft_strncmp(tokens[i], temp1, ft_strlen(temp1)) != 0)
+			env->env[k++] = ft_strdup(tmp[j]);
 		free(temp1);
 	}
-	// ft_strarr_free(tmp);
+	ft_strarr_free(tmp);
 	return (0);
 }
 
