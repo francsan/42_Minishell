@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/29 18:45:00 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/19 21:38:55 by francisco        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,13 @@ void	cmd_not_found(t_data **d, char **tokens)
 {
 	int	i;
 
+	if (tokens[0][0] == '\0')
+	{
+		i = -1;
+		while ((*d)->tokens[++i].token)
+			free((*d)->tokens[i].token);
+		return ;
+	}
 	g_exitvalue = 127;
 	printf("%s: command not found\n", tokens[0]);
 	i = -1;
