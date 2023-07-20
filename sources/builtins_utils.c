@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:28 by francsan          #+#    #+#             */
-/*   Updated: 2023/07/20 16:48:21 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:23:10 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*get_var(char **env, char *envid)
 	return (NULL);
 }
 
-int	var_set(char **tokens)
+int	var_set(char ***tokens)
 {
 	char	**tmp;
 	char	*val;
@@ -94,12 +94,14 @@ int	var_set(char **tokens)
 	val = get_var(env_func()->env, "HOME=");
 	if (!val)
 		return (0);
-	tmp = tokens;
-	tokens = ft_calloc(3, sizeof(char *));
-	if (!tokens)
+	tmp = ft_strarr_copy(*tokens);
+	ft_strarr_free(*tokens);
+	*tokens = ft_calloc(3, sizeof(char *));
+	if (!(*tokens))
 		return (2);
-	tokens[0] = tmp[0];
-	tokens[1] = val;
-	free(tmp);
+	(*tokens)[0] = ft_strdup(tmp[0]);
+	(*tokens)[1] = ft_strdup(val);
+	ft_strarr_free(tmp);
+	free(val);
 	return (0);
 }

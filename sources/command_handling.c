@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/07/19 21:32:12 by francisco        ###   ########.fr       */
+/*   Updated: 2023/07/20 17:29:08 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_cmd	*add_cmd(t_cmd *cmd)
 	return (new);
 }
 
-void	handle_builtin_cmd(t_data **d, char **tokens)
+void	handle_builtin_cmd(t_data **d, char ***tokens)
 {
 	t_cmd	*comando;
 
@@ -80,7 +80,6 @@ void	run_cmd(t_data **d, t_ints *n, char ***cmds)
 		execve(cmds[n->j][0], cmds[n->j], env_func()->env);
 		exit(0);
 	}
-	waitpid((*d)->pid[n->j], &g_exitvalue, 0);
 	(*d)->old_fd = dup((*d)->fd[0]);
 	close_pipe(d);
 	n->j++;
@@ -105,6 +104,9 @@ void	handle_multiple_cmds(t_data **d)
 	(*d)->pid = ft_calloc((*d)->num_commands + 1, sizeof(pid_t));
 	while (n.j < (*d)->num_commands)
 		run_cmd(d, &n, cmds);
+	n.j = 0;
+	while (n.j < (*d)->num_commands)
+		waitpid((*d)->pid[n.j++], &g_exitvalue, 0);
 	free((*d)->pid);
 	n.k = -1;
 	while (cmds[++n.k])

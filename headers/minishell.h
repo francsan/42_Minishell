@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/20 16:59:41 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:30:07 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,14 +149,14 @@ int			is_valid(char *str);
 int			strrlen(char *str, char c);
 int			env_set(char **tokens, t_env *env, int i);
 char		*get_var(char **env, char *envid);
-int			var_set(char **tokens);
+int			var_set(char ***tokens);
 
 // builtin.c
 int			env_change(t_env *env);
-int			built_cd(char **tokens, t_env *env);
+int			built_cd(char ***tokens, t_env *env);
 void		ft_exit(t_data **d, char **tokens, t_env *env);
 int			built_exit(t_data **d, char **tokens, t_env *env);
-int			exec_builtin(t_data **d, char **tokens, int outfd);
+int			exec_builtin(t_data **d, char ***tokens, int outfd);
 
 // command_handling_utils_2.c
 void		remove_quotes_2(t_data **d, t_ints *n, t_ints *m, char quotes);
@@ -170,7 +170,7 @@ int			get_pwd(t_data **d, char **pwd);
 
 // command_handling.c
 t_cmd		*add_cmd(t_cmd *cmd);
-void		handle_builtin_cmd(t_data **d, char **tokens);
+void		handle_builtin_cmd(t_data **d, char ***tokens);
 void		handle_single_cmd(t_data **d);
 void		run_cmd(t_data **d, t_ints *n, char ***cmds);
 void		handle_multiple_cmds(t_data **d);
