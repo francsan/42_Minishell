@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:52:28 by francsan          #+#    #+#             */
-/*   Updated: 2023/07/19 21:23:16 by francisco        ###   ########.fr       */
+/*   Updated: 2023/07/20 16:48:21 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,7 @@ int	var_set(char **tokens)
 
 	val = get_var(env_func()->env, "HOME=");
 	if (!val)
-	{
-		
-		return (0);/*return(*print_error(cmd, HOME not set))*/
-	}
+		return (0);
 	tmp = tokens;
 	tokens = ft_calloc(3, sizeof(char *));
 	if (!tokens)

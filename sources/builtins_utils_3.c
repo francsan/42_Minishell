@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 00:26:04 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/18 18:51:04 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/20 16:46:00 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,29 @@ void	problem_solver(char *str, char **temp)
 	}
 }
 
+int	check_var_name(char **temp, char **temp2)
+{
+	if (ft_strlen(*temp) >= ft_strlen(*temp2))
+	{
+		if (ft_strncmp(*temp, *temp2, ft_strlen(*temp)) == 0)
+		{
+			free(*temp);
+			free(*temp2);
+			return (1);
+		}
+	}
+	else
+	{
+		if (ft_strncmp(*temp, *temp2, ft_strlen(*temp2)) == 0)
+		{
+			free(*temp);
+			free(*temp2);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int	check_var_exist(char *str, char **env)
 {
 	int		i;
@@ -39,24 +62,8 @@ int	check_var_exist(char *str, char **env)
 	while (env[++i])
 	{
 		problem_solver(env[i], &temp2);
-		if (ft_strlen(temp) >= ft_strlen(temp2))
-		{
-			if (ft_strncmp(temp, temp2, ft_strlen(temp)) == 0)
-			{
-				free(temp);
-				free(temp2);
-				return (i);
-			}
-		}
-		else
-		{
-			if (ft_strncmp(temp, temp2, ft_strlen(temp2)) == 0)
-			{
-				free(temp);
-				free(temp2);
-				return (i);
-			}
-		}
+		if (check_var_name(&temp, &temp2))
+			return (i);
 		free(temp2);
 	}
 	free(temp);

@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/18 18:34:26 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/20 16:59:41 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,20 @@ int			built_export(char **tokens, t_env *env, int outfd);
 
 // builtin_utils_2.c
 int			is_num(char *str);
+void		sort_env(char **env, int i, int j);
+void		print_export(char **env, int out, int *i);
 void		export_print(char **env, int out);
 
 // builtin_utils_3.c
 void		problem_solver(char *str, char **temp);
+int			check_var_name(char **temp, char **temp2);
 int			check_var_exist(char *str, char **env);
 int			ft_len(char **env);
 int			handle_new_var(char **tokens, t_env *env, int i);
+
+// builtins_utils_4.c
+int			check_unset_var_name(char **tokens, char **temp, int i);
+int			export_var(t_ints *n, t_env *env, char **tokens);
 
 // builtin_utils.c
 int			is_valid(char *str);
