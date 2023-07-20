@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/18 18:33:27 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/20 18:25:16 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@
 
 int	g_exitvalue;
 
+static void	free_stuff(t_data **d, char **line, char **buffer)
+{
+	free((*d)->tokens);
+	free(*line);
+	free(*buffer);
+}
+
 static int	run_shell(t_data **d)
 {
 	char	*buffer;
@@ -58,6 +65,7 @@ static int	run_shell(t_data **d)
 
 	buffer = readline(PROMPT);
 	line = sort_line(buffer);
+	ignore_signal_i();
 	if_ctrl_d(d, buffer, line, env_func());
 	if (buffer && ft_strlen(buffer) > 0)
 		add_history(buffer);
@@ -67,15 +75,14 @@ static int	run_shell(t_data **d)
 		free(buffer);
 		return (1);
 	}
+	ignore_signal();
 	if ((*d)->num_commands != 0 || (*d)->flag_builtin != 0)
 	{
 		i = -1;
 		while ((*d)->tokens[++i].token)
 			free((*d)->tokens[i].token);
 	}
-	free((*d)->tokens);
-	free(line);
-	free(buffer);
+	free_stuff(d, &line, &buffer);
 	return (0);
 }
 
@@ -85,12 +92,11 @@ int	main(int argc, char **argv, char **envp)
 
 	(void) argc;
 	(void) argv;
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
 	d = ft_calloc(1, sizeof(t_data));
 	d->env = ft_strarr_copy(envp);
 	env_func()->env = env_create(envp);
 	get_paths(&d);
+	ignore_signal();
 	while (1)
 		if (run_shell(&d))
 			break ;

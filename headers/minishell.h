@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/20 17:30:07 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/20 18:16:35 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,9 @@ void		handle_redirections(t_data **d, t_ints *n, char *redir);
 void		check_redir(t_data **d, int cmd_num);
 
 // signals.c
-t_signal	*sig_func(void);
+void		ignore_signal_i(void);
+void		sig_handler_i(int sig);
+void		ignore_signal(void);
 void		sig_handler(int sig);
 void		if_ctrl_d(t_data **d, char *buffer, char *line, t_env *env);
 
