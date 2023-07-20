@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:51:46 by francsan          #+#    #+#             */
-/*   Updated: 2023/07/20 17:30:41 by francsan         ###   ########.fr       */
+/*   Updated: 2023/07/20 18:31:37 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	built_cd(char ***tokens, t_env *env)
 	if ((*tokens)[2])
 	{
 		g_exitvalue = 1;
-		printf("cd: too many arguments");
+		printf("cd: too many arguments\n");
 		return (1);
 	}
 	if (chdir((*tokens)[1]) != 0)
 	{
 		g_exitvalue = 1;
-		printf("cd: %s: No such file or directory", (*tokens)[1]);
+		printf("cd: %s: No such file or directory\n", (*tokens)[1]);
 		return (1);
 	}
 	if (env_change(env))
