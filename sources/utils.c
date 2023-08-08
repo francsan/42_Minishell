@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:26:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/18 18:48:00 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:16:24 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	space_pipes(char *buffer, char **line, int *i, int *j)
 	}
 }
 
-char	*sort_line(char *buffer)
+char	*sort_line(t_data **d, char *buffer)
 {
 	char	*line;
 	int		i;
@@ -80,6 +80,7 @@ char	*sort_line(char *buffer)
 	if (!buffer)
 		return (NULL);
 	i = get_pipe_num(buffer);
+	(*d)->num_pipes = i;
 	line = ft_calloc(ft_strlen(buffer) + (i * 2) + 1, sizeof(char));
 	i = 0;
 	j = 0;

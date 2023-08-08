@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/20 18:16:35 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:16:44 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct t_data {
 	char	**env;
 	char	**paths;
 	int		num_commands;
+	int		num_pipes;
 	int		flag_builtin;
 	int		old_fd;
 	int		fd[2];
@@ -249,7 +250,7 @@ char		**env_create(char **envp);
 void		get_paths(t_data **d);
 int			get_pipe_num(char *buffer);
 void		space_pipes(char *buffer, char **line, int *i, int *j);
-char		*sort_line(char *buffer);
+char		*sort_line(t_data **d, char *buffer);
 void		free_all(t_data **d, t_env *env);
 
 /* functions */

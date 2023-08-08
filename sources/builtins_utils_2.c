@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 19:36:59 by francsan          #+#    #+#             */
-/*   Updated: 2023/07/20 16:41:04 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:00:27 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,25 @@ void	print_export(char **env, int out, int *i)
 
 void	export_print(char **env, int out)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	**temp;
 
+	temp = ft_strarr_copy(env);
 	i = -1;
-	while (env[++i])
+	while (temp[++i])
 	{
 		j = -1;
-		while (env[++j])
-			sort_env(env, i, j);
+		while (temp[++j])
+			sort_env(temp, i, j);
 	}
 	i = -1;
-	while (env[++i])
+	while (temp[++i])
 	{
-		if ((env[i][0] >= 'A' && env[i][0] <= 'Z') \
-			|| (env[i][0] >= 'a' && env[i][0] <= 'z') \
-			|| env[i][0] == '\0')
-			print_export(env, out, &i);
+		if ((temp[i][0] >= 'A' && temp[i][0] <= 'Z') \
+			|| (temp[i][0] >= 'a' && temp[i][0] <= 'z') \
+			|| temp[i][0] == '\0')
+			print_export(temp, out, &i);
 	}
+	ft_strarr_free(temp);
 }

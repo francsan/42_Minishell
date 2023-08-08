@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/20 17:28:44 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:58:45 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	sort_tokens(t_data **d, char **tokens)
 			n.j = 0;
 			while ((*d)->tokens[n.i].token[n.j])
 			{
+				if ((*d)->tokens[n.i].token[n.j] == '\t')
+					(*d)->tokens[n.i].token[n.j] = '\0';
 				run_checks(d, &n);
 				run_checks_quotes(d, &n);
 				if ((*d)->tokens[n.i].token[n.j])
@@ -88,9 +90,9 @@ int	parse_command(t_data **d, char *line)
 		cmd_not_found(d, tokens);
 	else if ((*d)->num_commands == 1 && (*d)->flag_builtin == 1)
 		handle_builtin_cmd(d, &tokens);
-	else if ((*d)->num_commands == 1 && (*d)->flag_builtin == 0)
+	else if ((*d)->num_commands == 1 && (*d)->flag_builtin == 0 && (*d)->num_pipes == 0)
 		handle_single_cmd(d);
-	else if ((*d)->num_commands > 1)
+	else if ((*d)->num_pipes >= 1)
 		handle_multiple_cmds(d);
 	ft_strarr_free(tokens);
 	return (0);

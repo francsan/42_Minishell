@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/07/20 18:38:19 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:56:43 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ void	run_cmd(t_data **d, t_ints *n, char ***cmds)
 		return ;
 	else if ((*d)->pid[n->j] == 0)
 	{
+		if (access(cmds[n->j][0], F_OK) == -1)
+		{
+			usleep (5000);
+			cmd_not_found(d, cmds[n->j]);
+			exit(0);
+		}
 		handle_pipes(d, n);
 		check_redir(d, n->l);
 		execve(cmds[n->j][0], cmds[n->j], env_func()->env);
@@ -92,8 +98,8 @@ void	handle_multiple_cmds(t_data **d)
 
 	n.i = 0;
 	n.j = 0;
-	cmds = ft_calloc((*d)->num_commands + 1, sizeof(char **));
-	while (n.j < (*d)->num_commands)
+	cmds = ft_calloc(((*d)->num_pipes + 1) + 1, sizeof(char **));
+	while (n.j < ((*d)->num_pipes + 1))
 	{
 		cmds[n.j] = get_cmd(d, &n);
 		n.i++;
@@ -101,11 +107,11 @@ void	handle_multiple_cmds(t_data **d)
 	}
 	n.i = 0;
 	n.j = 0;
-	(*d)->pid = ft_calloc((*d)->num_commands + 1, sizeof(pid_t));
-	while (n.j < (*d)->num_commands)
+	(*d)->pid = ft_calloc(((*d)->num_pipes + 1) + 1, sizeof(pid_t));
+	while (n.j < ((*d)->num_pipes + 1))
 		run_cmd(d, &n, cmds);
 	n.j = 0;
-	while (n.j < (*d)->num_commands)
+	while (n.j < ((*d)->num_pipes + 1))
 		waitpid((*d)->pid[n.j++], &g_exitvalue, 0);
 	free((*d)->pid);
 	n.k = -1;
