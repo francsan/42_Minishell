@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 19:52:37 by francisco         #+#    #+#             */
-/*   Updated: 2023/08/08 17:41:55 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:19:55 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,12 @@ int	parse_command(t_data **d, char *line)
 	(*d)->num_commands = 0;
 	(*d)->flag_builtin = 0;
 	sort_tokens(d, tokens);
-	if ((*d)->num_commands == 0 && tokens[0])
+	if ((*d)->num_commands == 0 && tokens[0] && (*d)->tokens[0].f_r_in == 0)
 		cmd_not_found(d, tokens);
 	else if ((*d)->num_commands == 1 && (*d)->flag_builtin == 1)
 		handle_builtin_cmd(d, &tokens);
-	else if ((*d)->num_commands == 1 && (*d)->flag_builtin == 0 \
-		&& (*d)->num_pipes == 0)
+	else if (((*d)->num_commands == 1 && (*d)->flag_builtin == 0 \
+		&& (*d)->num_pipes == 0))
 		handle_single_cmd(d);
 	else if ((*d)->num_pipes >= 1)
 		handle_multiple_cmds(d);

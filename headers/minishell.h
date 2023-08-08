@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/08/08 15:16:44 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 19:52:56 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct t_ints {
 	int		j;
 	int		k;
 	int		l;
+	int		*array;
 	char	*tmp;
 }	t_ints;
 
@@ -175,6 +176,11 @@ void		handle_builtin_cmd(t_data **d, char ***tokens);
 void		handle_single_cmd(t_data **d);
 void		run_cmd(t_data **d, t_ints *n, char ***cmds);
 void		handle_multiple_cmds(t_data **d);
+
+// heredoc_utils.c
+int			check_for_dollar(t_ints *n, char *buffer);
+char		*expand_dollar_var_2(t_ints *n, char *buffer, char **vars, char **vars_values);
+void		expand_dollar_var(t_ints *n, char **buffer);
 
 // minishell_split_utils.c
 int			check_quote(t_ints *n, char *line, char quote);

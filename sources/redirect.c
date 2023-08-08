@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 00:02:10 by francisco         #+#    #+#             */
-/*   Updated: 2023/06/28 23:43:00 by francisco        ###   ########.fr       */
+/*   Updated: 2023/08/08 20:15:53 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,53 @@ char	*skip_quotes(t_data **d, t_ints *n)
 	return (redir);
 }
 
+char	*get_eof(char *str, int size)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	tmp = malloc(sizeof(char) * size);
+	i = 0;
+	j = 0;
+	while (str[i])
+		i++;
+	while (str[i] != '/')
+		i--;
+	i++;
+	while (str[i])
+	{
+		tmp[j] = str[i];
+		i++;
+		j++;
+	}
+	return (tmp);
+}
+
 void	handle_heredoc(t_data **d, char *delimiter)
 {
+	t_ints	n;
 	char	*buffer;
 	int		temp_fd;
 
 	temp_fd = open("../.tmp", O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	write(STDIN_FILENO, "> ", 2);
 	buffer = get_next_line(STDIN_FILENO);
+	delimiter = get_eof(delimiter, ft_strlen(buffer));
 	while (1)
 	{
-		if (ft_strncmp(buffer, delimiter, ft_strlen(buffer) - 1) == 0 \
+		if (ft_strncmp(buffer, delimiter, ft_strlen(delimiter)) == 0 \
 			&& ft_strlen(buffer) > 1)
 			break ;
+		if (check_for_dollar(&n, buffer))
+			expand_dollar_var(&n, &buffer);
 		write(temp_fd, buffer, ft_strlen(buffer));
 		free(buffer);
 		write(STDIN_FILENO, "> ", 2);
 		buffer = get_next_line(STDIN_FILENO);
 	}
 	free(buffer);
+	free(delimiter);
 	(*d)->infile = open("../.tmp", O_RDONLY);
 }
 
