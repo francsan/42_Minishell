@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/08/08 15:56:43 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:15:44 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,15 @@ void	handle_single_cmd(t_data **d)
 
 	n.i = 0;
 	cmd = get_cmd(d, &n);
+	print_array(cmd); // TESTING
 	pid = fork();
 	if (pid < 0)
 		return ;
 	else if (pid == 0)
 	{
 		check_redir(d, 0);
-		execve(cmd[0], cmd, env_func()->env);
+		if (execve(cmd[0], cmd, env_func()->env) == -1)
+			perror(cmd[0]);
 		exit(0);
 	}
 	waitpid(pid, &g_exitvalue, 0);
@@ -83,7 +85,8 @@ void	run_cmd(t_data **d, t_ints *n, char ***cmds)
 		}
 		handle_pipes(d, n);
 		check_redir(d, n->l);
-		execve(cmds[n->j][0], cmds[n->j], env_func()->env);
+		if (execve(cmds[n->j][0], cmds[n->j], env_func()->env) == -1)
+			perror(cmds[n->j][0]);
 		exit(0);
 	}
 	(*d)->old_fd = dup((*d)->fd[0]);

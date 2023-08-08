@@ -6,11 +6,33 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/08/08 16:17:31 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:58:39 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
+
+int	check_for_bin(char *temp2)
+{
+	int	i;
+
+	i = 0;
+	while (temp2[i])
+	{
+		if (temp2[i] == '/')
+		{
+			if (temp2[i + 1] == 's')
+			{
+				if (ft_strncmp(&temp2[i + 2], "bin", 3) == 0)
+					return (1);
+			}
+			else if (ft_strncmp(&temp2[i + 1], "bin", 3) == 0)
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
 
 int	try_paths(t_data **d, t_ints *n, int i)
 {
@@ -21,8 +43,11 @@ int	try_paths(t_data **d, t_ints *n, int i)
 	temp2 = ft_strjoin(temp1, (*d)->tokens[n->i].token);
 	if (access(temp2, F_OK) == 0 && (*d)->tokens[n->i].token[0] != '.')
 	{
-		free((*d)->tokens[n->i].token);
-		(*d)->tokens[n->i].token = ft_strdup(temp2);
+		if (check_for_bin(temp2))
+		{
+			free((*d)->tokens[n->i].token);
+			(*d)->tokens[n->i].token = ft_strdup(temp2);
+		}
 		free(temp1);
 		free(temp2);
 		return (1);
@@ -53,7 +78,7 @@ int	check_for_command(t_data **d, t_ints *n)
 
 void	run_checks(t_data **d, t_ints *n)
 {
-	if (check_for_command(d, n) == 0)
+	if (check_for_command(d, n) == 0 && (*d)->tokens[n->i - 1].f_r_in == 0)
 	{
 		(*d)->tokens[n->i].f_command = 1;
 		(*d)->num_commands++;
