@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:10:25 by francsan          #+#    #+#             */
-/*   Updated: 2023/08/08 17:15:44 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:40:41 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	handle_single_cmd(t_data **d)
 
 	n.i = 0;
 	cmd = get_cmd(d, &n);
-	print_array(cmd); // TESTING
 	pid = fork();
 	if (pid < 0)
 		return ;

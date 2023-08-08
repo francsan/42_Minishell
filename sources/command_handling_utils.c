@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 19:18:41 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/29 19:53:40 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:48:21 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ char	*remove_quotes(t_data **d, t_ints *n, char quotes)
 	while (m.l < 2)
 	{
 		m.i = 0;
-		m.j = 0;
 		m.k = 0;
-		while ((*d)->tokens[n->i].token[m.i] && m.j != 2)
+		while ((*d)->tokens[n->i].token[m.i])
 			remove_quotes_2(d, n, &m, quotes);
 		if (m.l == 0)
 			m.tmp = ft_calloc(m.k + 1, sizeof(char));
