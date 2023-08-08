@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: francisco <francisco@student.42.fr>        +#+  +:+       +#+        */
+/*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:16:36 by francisco         #+#    #+#             */
-/*   Updated: 2023/07/19 21:38:55 by francisco        ###   ########.fr       */
+/*   Updated: 2023/08/08 16:17:31 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	check_for_command(t_data **d, t_ints *n)
 	i = -1;
 	while ((*d)->tokens[n->i].token[++i])
 	{
-		if ((*d)->tokens[n->i].token[0] == '/' \
+		if (((*d)->tokens[n->i].token[0] == '/' \
+			|| (*d)->tokens[n->i].token[0] == '.') \
 			&& access((*d)->tokens[n->i].token, F_OK) == 0)
 			return (0);
 	}

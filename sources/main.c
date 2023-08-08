@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:19 by francisco         #+#    #+#             */
-/*   Updated: 2023/08/08 15:31:59 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:19:35 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,16 @@ int	main(int argc, char **argv, char **envp)
 	get_paths(&d);
 	ignore_signal();
 	while (1)
+	{
 		if (run_shell(&d))
-			break ;
+		{
+			ft_strarr_free(d->paths);
+			ft_strarr_free(d->env);
+			ft_strarr_free(env_func()->env);
+			free(d);
+			return (g_exitvalue);
+		}
+	}
 	free_all(&d, env_func());
 	return (g_exitvalue);
 }
