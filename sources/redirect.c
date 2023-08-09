@@ -38,53 +38,52 @@ char	*skip_quotes(t_data **d, t_ints *n)
 	return (redir);
 }
 
-char	*get_eof(char *str, int size)
+void	get_eof(char **delimiter, int size)
 {
 	int		i;
 	int		j;
 	char	*tmp;
 
-	tmp = malloc(sizeof(char) * size);
+	tmp = ft_calloc(size + 1, sizeof(char));
 	i = 0;
 	j = 0;
-	while (str[i])
+	while (delimiter[i])
 		i++;
-	while (str[i] != '/')
+	while ((*delimiter)[i - 1] != '/')
 		i--;
-	i++;
-	while (str[i])
-	{
-		tmp[j] = str[i];
-		i++;
-		j++;
-	}
-	return (tmp);
+	while (delimiter[i])
+		tmp[j++] = (*delimiter)[i++];
+	free(*delimiter);
+	*delimiter = ft_strdup(tmp);
+	free(tmp);
 }
 
 void	handle_heredoc(t_data **d, char *delimiter)
 {
-	t_ints	n;
 	char	*buffer;
 	int		temp_fd;
 
 	temp_fd = open("../.tmp", O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	write(STDIN_FILENO, "> ", 2);
 	buffer = get_next_line(STDIN_FILENO);
-	delimiter = get_eof(delimiter, ft_strlen(buffer));
+	get_eof(&delimiter, ft_strlen(buffer));
 	while (1)
 	{
-		if (ft_strncmp(buffer, delimiter, ft_strlen(delimiter)) == 0 \
-			&& ft_strlen(buffer) > 1)
+		
+		if (ft_strlen(buffer) - 1 >= ft_strlen(delimiter) \
+			&& ft_strncmp(buffer, delimiter, ft_strlen(buffer) - 1) == 0)
 			break ;
-		if (check_for_dollar(&n, buffer))
-			expand_dollar_var(&n, &buffer);
-		write(temp_fd, buffer, ft_strlen(buffer));
+		else if (ft_strlen(buffer) - 1 < ft_strlen(delimiter) \
+			&& ft_strncmp(buffer, delimiter, ft_strlen(delimiter)) == 0)
+			break ;
+		// if (check_for_dollar(&n, buffer))
+		// 	expand_dollar_var(&n, &buffer);
+		write(temp_fd, buffer, ft_strlen(buffer) + 1);
 		free(buffer);
 		write(STDIN_FILENO, "> ", 2);
 		buffer = get_next_line(STDIN_FILENO);
 	}
 	free(buffer);
-	free(delimiter);
 	(*d)->infile = open("../.tmp", O_RDONLY);
 }
 

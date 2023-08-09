@@ -90,8 +90,8 @@ int	parse_command(t_data **d, char *line)
 		cmd_not_found(d, tokens);
 	else if ((*d)->num_commands == 1 && (*d)->flag_builtin == 1)
 		handle_builtin_cmd(d, &tokens);
-	else if (((*d)->num_commands == 1 && (*d)->flag_builtin == 0 \
-		&& (*d)->num_pipes == 0))
+	else if (((*d)->num_commands == 1 && (*d)->flag_builtin == 0) \
+		|| ((*d)->num_commands == 0 && (*d)->tokens[0].f_r_in == 1))
 		handle_single_cmd(d);
 	else if ((*d)->num_pipes >= 1)
 		handle_multiple_cmds(d);
