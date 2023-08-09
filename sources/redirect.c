@@ -92,7 +92,11 @@ void	handle_heredoc(t_data **d, char *delimiter)
 	while (1)
 	{
 		if (!buffer)
+		{
+			if (delimiter)
+				free(delimiter);
 			break ;
+		}
 		signal(SIGINT, heredoc_signal);
 		signal(SIGQUIT, heredoc_signal);
 		if (ft_strlen(buffer) - 1 >= ft_strlen(delimiter) \
@@ -104,7 +108,8 @@ void	handle_heredoc(t_data **d, char *delimiter)
 		if (check_for_dollar(&n, buffer))
 			expand_dollar_var(&n, &buffer);
 		write(temp_fd, buffer, ft_strlen(buffer) + 1);
-		free(buffer);
+		if (buffer)
+			free(buffer);
 		write(STDIN_FILENO, "> ", 2);
 		buffer = get_next_line(STDIN_FILENO);
 	}
