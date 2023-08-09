@@ -58,26 +58,51 @@ void	get_eof(char **delimiter, int size)
 	free(tmp);
 }
 
+void	heredoc_signal(int signal)
+{
+	if (signal == SIGINT)
+	{
+		g_exitvalue = 130;
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		exit(1);
+	}
+	else
+		exit(1);
+}
+
 void	handle_heredoc(t_data **d, char *delimiter)
 {
+	t_ints	n;
 	char	*buffer;
 	int		temp_fd;
 
+	signal(SIGINT, heredoc_signal);
+	signal(SIGQUIT, heredoc_signal);
 	temp_fd = open("../.tmp", O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	write(STDIN_FILENO, "> ", 2);
 	buffer = get_next_line(STDIN_FILENO);
-	get_eof(&delimiter, ft_strlen(buffer));
+	n.a = 0;
+	while (delimiter[n.a])
+	{
+		if (delimiter[n.a] == '/')
+			get_eof(&delimiter, ft_strlen(buffer));
+		n.a++;
+	}
 	while (1)
 	{
-		
+		if (!buffer)
+			break ;
+		signal(SIGINT, heredoc_signal);
+		signal(SIGQUIT, heredoc_signal);
 		if (ft_strlen(buffer) - 1 >= ft_strlen(delimiter) \
 			&& ft_strncmp(buffer, delimiter, ft_strlen(buffer) - 1) == 0)
 			break ;
 		else if (ft_strlen(buffer) - 1 < ft_strlen(delimiter) \
 			&& ft_strncmp(buffer, delimiter, ft_strlen(delimiter)) == 0)
 			break ;
-		// if (check_for_dollar(&n, buffer))
-		// 	expand_dollar_var(&n, &buffer);
+		if (check_for_dollar(&n, buffer))
+			expand_dollar_var(&n, &buffer);
 		write(temp_fd, buffer, ft_strlen(buffer) + 1);
 		free(buffer);
 		write(STDIN_FILENO, "> ", 2);

@@ -47,6 +47,9 @@
 /* structs */
 
 typedef struct t_ints {
+	int		a;
+	int		b;
+	int		c;
 	int		i;
 	int		j;
 	int		k;
@@ -179,7 +182,6 @@ void		handle_multiple_cmds(t_data **d);
 
 // heredoc_utils.c
 int			check_for_dollar(t_ints *n, char *buffer);
-char		*expand_dollar_var_2(t_ints *n, char *buffer, char **vars, char **vars_values);
 void		expand_dollar_var(t_ints *n, char **buffer);
 
 // minishell_split_utils.c
