@@ -102,6 +102,51 @@ char	**get_env_values(t_ints *n, char **buffer_vars, char **env)
 	return (env_values);
 }
 
+char	*expand_dollar_var_2(t_ints *n, char *buffer, char **buffer_vars, char **env_values)
+{
+	t_ints	m;
+	char	*tmp;
+
+	m.i = 0;
+	m.a = ft_strlen(buffer);
+	m.b = 0;
+	while (buffer_vars[m.i])
+	{
+		m.b += ft_strlen(buffer_vars[m.i]);
+		m.i++;
+	}
+	m.i = 0;
+	m.c = 0;
+	while (env_values[m.i])
+	{
+		m.c += ft_strlen(env_values[m.i]);
+		m.i++;
+	}
+	tmp = ft_calloc((m.a - m.b) + m.c, sizeof(char));
+	m.i = 0;
+	m.j = 0;
+	m.k = 0;
+	while (buffer[m.i])
+	{
+		if (buffer[m.i] == '$')
+		{
+			if (m.k + 1 < n->j)
+				m.i += ft_strlen(buffer_vars[m.k]) + 1;
+			else
+				m.i += ft_strlen(buffer_vars[m.k]);
+			m.l = 0;
+			while (env_values[m.k][m.l])
+			{
+				tmp[m.j++] = env_values[m.k][m.l++];
+			}
+			m.k++;
+		}
+		else
+			tmp[m.j++] = buffer[m.i++];
+	}
+	return (tmp);
+}
+
 void	expand_dollar_var(t_ints *n, char **buffer)
 {
 	char	**buffer_vars;
@@ -112,7 +157,8 @@ void	expand_dollar_var(t_ints *n, char **buffer)
 	print_array(buffer_vars); // TESTING
 	env_values = get_env_values(n, buffer_vars, env_func()->env);
 	print_array(env_values); // TESTING
-	tmp = ft_strdup(buffer_vars[0]);
+	tmp = expand_dollar_var_2(n, *buffer, buffer_vars, env_values);
+	ft_strarr_free(env_values);
 	ft_strarr_free(buffer_vars);
 	free(*buffer);
 	*buffer = ft_strdup(tmp);
