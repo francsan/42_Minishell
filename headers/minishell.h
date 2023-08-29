@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:19:23 by francisco         #+#    #+#             */
-/*   Updated: 2023/08/08 19:52:56 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:48:58 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ void		get_values_2(t_ints *m, char ***vars_values, \
 			char **vars, char **env);
 char		*expand_variable_2(t_data **d, t_ints *n, \
 			char **vars, char **vars_values);
+int			check_for_empty_pipe(t_data **d);
 
 // parsing_utils.c
 int			try_paths(t_data **d, t_ints *n, int i);

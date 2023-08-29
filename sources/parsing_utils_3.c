@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 18:20:26 by francsan          #+#    #+#             */
-/*   Updated: 2023/06/29 18:37:12 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:54:32 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,31 @@ char	*expand_variable_2(t_data **d, t_ints *n, \
 		}
 	}
 	return (token);
+}
+
+int	check_for_empty_pipe(t_data **d)
+{
+	t_ints	n;
+
+	n.i = 0;
+	while ((*d)->tokens[n.i].token && (*d)->tokens[n.i + 1].token)
+	{
+		if ((*d)->tokens[n.i].f_pipe == 1 && (*d)->tokens[n.i + 1].f_pipe == 1)
+		{
+			// n.j = 0;
+			// if ((*d)->tokens)
+			// {
+			// 	while ((*d)->tokens[n.j].token)
+			// 	{
+			// 		free((*d)->tokens[n.j].token);
+			// 		n.j++;
+			// 	}
+			// 	free((*d)->tokens);
+			// }
+			printf("Minishell: syntax error near unexpected token `||'\n");
+			return (1);
+		}
+		n.i++;
+	}
+	return (0);
 }

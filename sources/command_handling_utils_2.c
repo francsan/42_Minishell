@@ -6,7 +6,7 @@
 /*   By: francsan <francsan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 00:05:43 by francisco         #+#    #+#             */
-/*   Updated: 2023/08/08 17:48:36 by francsan         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:35:23 by francsan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	remove_quotes_2(t_data **d, t_ints *n, t_ints *m, char quotes)
 {
-	if ((*d)->tokens[n->i].token[m->i] == quotes \
-		|| (*d)->tokens[n->i].token[m->i] == '<' \
-		|| (*d)->tokens[n->i].token[m->i] == '>')
+	if ((*d)->tokens[n->i].token[m->i] == quotes)
 	{
 		m->i++;
 	}
